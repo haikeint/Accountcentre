@@ -1,0 +1,25 @@
+Git Flow Workflow
+
+1. Master Branch:
+    - Đây là nhánh chính của dự án.
+    - Chỉ chứa các phiên bản ổn định đã được phát hành.
+
+2. Develop Branch:
+    - Nhánh phát triển.
+    - Tất cả các tính năng mới được phát triển sẽ được tạo và tích hợp vào nhánh này.
+    - Được coi là phiên bản thử nghiệm (staging) trước khi phát hành.
+
+3. Feature Branches:
+    - Được tạo ra từ nhánh Develop.
+    - Mỗi tính năng mới hoặc cải tiến được phát triển trong một nhánh riêng.
+    - Khi hoàn thành, nhánh feature được hợp nhất (merge) lại vào nhánh Develop.
+
+4. Release Branches:
+    - Được tạo ra từ nhánh Develop khi sẵn sàng để phát hành một phiên bản mới.
+    - Các bản vá (bug fixes), cải tiến nhỏ và chuẩn bị cho việc phát hành sẽ được thực hiện trong nhánh này.
+    - Sau khi hoàn thành, nhánh release được hợp nhất lại vào nhánh Master và Develop, đồng thời được đánh dấu là một phiên bản phát hành.
+
+5. Hotfix Branches:
+    - Được tạo ra từ nhánh Master khi phát hiện lỗi trong phiên bản đang hoạt động.
+    - Chỉ chứa các bản vá (bug fixes) cho lỗi cụ thể.
+    - Khi hoàn thành, nhánh hotfix được hợp nhất lại vào nhánh Master và Develop.
