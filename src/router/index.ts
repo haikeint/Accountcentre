@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import HomeView from '@/views/Account/Home/HomeView.vue'
 import AccountView from '@/views/AccountView.vue'
 
 const router = createRouter({
@@ -7,7 +7,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
       component: AccountView,
       children: [
         {

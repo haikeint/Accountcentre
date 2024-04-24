@@ -2,31 +2,32 @@
 |   DomNode
 -----------------------------------------------*/
 class DomNode {
-  node: any
-  constructor(node: any) {
+  node: HTMLInputElement
+  constructor(node: HTMLInputElement) {
     this.node = node
   }
 
-  addClass(className: any) {
+  addClass(className: string) {
     this.isValidNode() && this.node.classList.add(className)
   }
 
-  removeClass(className: any) {
+  removeClass(className: string) {
     this.isValidNode() && this.node.classList.remove(className)
   }
 
-  toggleClass(className: any) {
+  toggleClass(className: string) {
     this.isValidNode() && this.node.classList.toggle(className)
   }
 
-  hasClass(className: any) {
+  hasClass(className: string) {
     this.isValidNode() && this.node.classList.contains(className)
   }
 
-  data(key: any) {
+  data(key: string) {
     if (this.isValidNode()) {
       try {
-        return JSON.parse(this.node.dataset[this.camelize(key)])
+        const dataset = this.node.dataset[this.camelize(key)] as string
+        return JSON.parse(dataset)
       } catch (e) {
         return this.node.dataset[this.camelize(key)]
       }
@@ -34,8 +35,8 @@ class DomNode {
     return null
   }
 
-  attr(name: any) {
-    return this.isValidNode() && this.node[name]
+  attr(name: string) {
+    return this.isValidNode() && this.node[name as keyof HTMLInputElement]
   }
 
   setAttribute(name: any, value: any) {
@@ -46,8 +47,8 @@ class DomNode {
     this.isValidNode() && this.node.removeAttribute(name)
   }
 
-  setProp(name: any, value: any) {
-    this.isValidNode() && (this.node[name] = value)
+  setProp(name: string, value: boolean) {
+    if (this.isValidNode()) this.node['checked'] = value
   }
 
   on(event: any, cb: any) {
@@ -59,8 +60,8 @@ class DomNode {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  camelize(str: any) {
-    const text = str.replace(/[-_\s.]+(.)?/g, (_: any, c: any) => (c ? c.toUpperCase() : ''))
+  camelize(str: string) {
+    const text = str.replace(/[-_\s.]+(.)?/g, (_: string, c: string) => (c ? c.toUpperCase() : ''))
     return `${text.substr(0, 1).toLowerCase()}${text.substr(1)}`
   }
 }

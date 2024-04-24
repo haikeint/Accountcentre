@@ -5,84 +5,96 @@ import CONFIG from './config'
 /* -------------------------------------------------------------------------- */
 /*                                Theme Control                               */
 /* -------------------------------------------------------------------------- */
-const initialDomSetup = (element: any) => {
+const initialDomSetup = (element: Element) => {
   if (!element) return
-  handleThemeDropdownIcon(getItemFromStore('theme'))
-  const dataUrlDom = element.querySelector('[data-theme-control = "navbarPosition"]')
+  handleThemeDropdownIcon(String(getItemFromStore('theme')))
+  const dataUrlDom = element.querySelector('[data-theme-control = "navbarPosition"]') as HTMLElement
   const hasDataUrl = dataUrlDom ? getData(dataUrlDom, 'page-url') : null
 
-  element.querySelectorAll('[data-theme-control]').forEach((el: any) => {
-    const inputDataAttributeValue = getData(el, 'theme-control')
-    const localStorageValue = getItemFromStore(inputDataAttributeValue)
-
+  element.querySelectorAll('[data-theme-control]').forEach((el) => {
+    const inputDataAttributeValue = getData(el as HTMLElement, 'theme-control')
+    const localStorageValue = getItemFromStore(String(inputDataAttributeValue))
+    const htmlInputEl = el as HTMLInputElement
     if (
       inputDataAttributeValue === 'navbarStyle' &&
       !hasDataUrl &&
       (getItemFromStore('navbarPosition') === 'top' ||
         getItemFromStore('navbarPosition') === 'double-top')
     ) {
-      el.setAttribute('disabled', true)
+      el.setAttribute('disabled', String(true))
     }
-    if (el.type === 'select-one' && inputDataAttributeValue === 'navbarPosition') {
-      el.value = localStorageValue
+
+    if (htmlInputEl.type === 'select-one' && inputDataAttributeValue === 'navbarPosition') {
+      htmlInputEl.value = String(localStorageValue)
     }
-    if (el.type === 'checkbox') {
+    if (htmlInputEl.type === 'checkbox') {
       if (inputDataAttributeValue === 'theme') {
         if (
           localStorageValue === 'auto' ? getSystemTheme() === 'dark' : localStorageValue === 'dark'
         ) {
-          el.setAttribute('checked', true)
+          htmlInputEl.setAttribute('checked', 'true')
         }
       } else {
-        localStorageValue && el.setAttribute('checked', true)
+        localStorageValue && htmlInputEl.setAttribute('checked', 'true')
       }
-    } else if (el.type === 'radio') {
-      const isChecked = localStorageValue === el.value
-      isChecked && el.setAttribute('checked', true)
+    } else if (htmlInputEl.type === 'radio') {
+      const isChecked = localStorageValue === htmlInputEl.value
+      isChecked && htmlInputEl.setAttribute('checked', 'true')
     } else {
-      const isActive = localStorageValue === el.value
-      isActive && el.classList.add('active')
+      const isActive = localStorageValue === htmlInputEl.value
+      isActive && htmlInputEl.classList.add('active')
     }
   })
 }
 
-const changeTheme = (element: any) => {
-  element.querySelectorAll('[data-theme-control = "theme"]').forEach((el: any) => {
-    const inputDataAttributeValue = getData(el, 'theme-control')
-    const localStorageValue = getItemFromStore(inputDataAttributeValue)
+const changeTheme = (element: Element) => {
+  element.querySelectorAll('[data-theme-control = "theme"]').forEach((el) => {
+    const inputDataAttributeValue = getData(el as HTMLElement, 'theme-control')
+    const localStorageValue = getItemFromStore(String(inputDataAttributeValue))
+    const hhtmlInputEl = el as HTMLInputElement
 
-    if (el.type === 'checkbox') {
+    if (hhtmlInputEl.type === 'checkbox') {
       if (localStorageValue === 'auto') {
-        getSystemTheme() === 'dark' ? (el.checked = true) : (el.checked = false)
+        getSystemTheme() === 'dark' ? (hhtmlInputEl.checked = true) : (hhtmlInputEl.checked = false)
       } else {
-        localStorageValue === 'dark' ? (el.checked = true) : (el.checked = false)
+        localStorageValue === 'dark'
+          ? (hhtmlInputEl.checked = true)
+          : (hhtmlInputEl.checked = false)
       }
-    } else if (el.type === 'radio') {
-      localStorageValue === el.value ? (el.checked = true) : (el.checked = false)
+    } else if (hhtmlInputEl.type === 'radio') {
+      localStorageValue === hhtmlInputEl.value
+        ? (hhtmlInputEl.checked = true)
+        : (hhtmlInputEl.checked = false)
     } else {
-      localStorageValue === el.value ? el.classList.add('active') : el.classList.remove('active')
+      localStorageValue === hhtmlInputEl.value
+        ? hhtmlInputEl.classList.add('active')
+        : hhtmlInputEl.classList.remove('active')
     }
   })
 }
 
-const handleThemeDropdownIcon = (value: any) => {
-  document.querySelectorAll('[data-theme-dropdown-toggle-icon]').forEach((el) => {
-    el.classList.toggle('d-none', value !== getData(el, 'theme-dropdown-toggle-icon'))
+const handleThemeDropdownIcon = (value: string) => {
+  document.querySelectorAll('[data-theme-dropdown-toggle-icon]').forEach((el: Element) => {
+    el.classList.toggle(
+      'd-none',
+      value !== getData(el as HTMLElement, 'theme-dropdown-toggle-icon')
+    )
   })
 }
 
 const themeControl = () => {
-  const themeController = new DomNode(document.body)
+  const themeController = new DomNode(document.body as HTMLInputElement)
 
   const navbarVertical = document.querySelector('.navbar-vertical')
   initialDomSetup(themeController.node)
 
-  themeController.on('click', (e: any) => {
-    const target = new DomNode(e.target)
+  themeController.on('click', (e: MouseEvent) => {
+    const target = new DomNode(e.target as HTMLInputElement)
+    const eventTarget: HTMLInputElement = e.target as HTMLInputElement
 
     if (target.data('theme-control')) {
       const control = target.data('theme-control')
-      let value = e.target[e.target.type === 'checkbox' ? 'checked' : 'value']
+      let value = eventTarget[eventTarget.type === 'checkbox' ? 'checked' : 'value'] as string
 
       if (control === 'theme') {
         typeof value === 'boolean' && (value = value ? 'dark' : 'light')
@@ -93,12 +105,12 @@ const themeControl = () => {
           case 'theme': {
             document.documentElement.setAttribute(
               'data-bs-theme',
-              value === 'auto' ? getSystemTheme() : value
+              value === 'auto' ? getSystemTheme() : value.toString()
             )
             const clickControl = new CustomEvent('clickControl', {
               detail: { control, value }
             })
-            e.currentTarget.dispatchEvent(clickControl)
+            if (e.currentTarget) e.currentTarget.dispatchEvent(clickControl)
             changeTheme(themeController.node)
             break
           }
@@ -132,8 +144,8 @@ const themeControl = () => {
     if (target.data('theme-control') === 'navbarPosition') {
       Object.prototype.hasOwnProperty.call(CONFIG, 'navbarPosition') &&
         setItemToStore('navbarPosition', e.target.value)
-
-      const pageUrl = getData(target.node.selectedOptions[0], 'page-url')
+      // const pageUrl = getData(target.node.selectedOptions[0], 'page-url')
+      const pageUrl = getData(target.node.value, 'page-url')
       pageUrl
         ? window.location.replace(pageUrl)
         : window.location.replace(window.location.href.split('#')[0])

@@ -23,7 +23,7 @@ const searchInit = () => {
     SEARCH_CLOSE: 'search.close'
   }
 
-  const hideSearchSuggestion = (searchArea: any): void => {
+  const hideSearchSuggestion = (searchArea: Element): void => {
     const el = searchArea.querySelector(Selectors.SEARCH_TOGGLE)
     const dropdownMenu = searchArea.querySelector(Selectors.DROPDOWN_MENU)
     if (!el || !dropdownMenu) return
@@ -40,7 +40,7 @@ const searchInit = () => {
   }
 
   searchAreas.forEach((searchArea) => {
-    const input = searchArea.querySelector(Selectors.SEARCH_INPUT)
+    const input = searchArea.querySelector(Selectors.SEARCH_INPUT) as HTMLInputElement
     const btnDropdownClose = searchArea.querySelector(Selectors.SEARCH_DISMISS)
     const dropdownMenu = searchArea.querySelector(Selectors.DROPDOWN_MENU)
 
@@ -62,8 +62,7 @@ const searchInit = () => {
     btnDropdownClose &&
       btnDropdownClose.addEventListener(Events.CLICK, (e) => {
         hideSearchSuggestion(searchArea)
-        ;(<HTMLInputElement>input).value = ''
-
+        input.value = ''
         const event = new CustomEvent(Events.SEARCH_CLOSE)
         e?.currentTarget?.dispatchEvent(event)
       })
