@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                    Utils                                   */
 /* -------------------------------------------------------------------------- */
-const docReady = (fn: any) => {
+const docReady = (fn: any): void => {
   // see if DOM is already available
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', fn)
@@ -10,11 +10,11 @@ const docReady = (fn: any) => {
   }
 }
 
-const resize = (fn: any) => window.addEventListener('resize', fn)
+const resize = (fn: any): void => window.addEventListener('resize', fn)
 
-const isIterableArray = (array: any) => Array.isArray(array) && !!array.length
+const isIterableArray = (array: any): boolean => Array.isArray(array) && !!array.length
 
-const camelize = (str: any) => {
+const camelize = (str: string): string => {
   const text = str.replace(/[-_\s.]+(.)?/g, (match: any, capture: any) => {
     if (capture) {
       return capture.toUpperCase()
@@ -24,9 +24,9 @@ const camelize = (str: any) => {
   return `${text.substr(0, 1).toLowerCase()}${text.substr(1)}`
 }
 
-const getData = (el: any, data: any) => {
+const getData = (el: any, data: string): string | undefined => {
   try {
-    return JSON.parse(el.dataset[camelize(data)])
+    return JSON.parse(String(el.dataset[camelize(data)]))
   } catch (e) {
     return el.dataset[camelize(data)]
   }
@@ -34,25 +34,29 @@ const getData = (el: any, data: any) => {
 
 /* ----------------------------- Colors function ---------------------------- */
 
-const hexToRgb = (hexValue: any) => {
-  let hex
+const hexToRgb = (hexValue: string): number[] | null => {
+  let hex: string
   hexValue.indexOf('#') === 0 ? (hex = hexValue.substring(1)) : (hex = hexValue)
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
-    hex.replace(shorthandRegex, (m: any, r: any, g: any, b: any) => r + r + g + g + b + b)
+  const shorthandRegex: RegExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+  const result: RegExpExecArray | null = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+    hex.replace(
+      shorthandRegex,
+      (m: string, r: string, g: string, b: string) => r + r + g + g + b + b
+    )
   )
   return result ? [parseInt(result[1], 16), parseInt(result[2], 16), parseInt(result[3], 16)] : null
 }
 
-const rgbaColor = (color = '#fff', alpha = 0.5) => `rgba(${hexToRgb(color)}, ${alpha})`
+const rgbaColor = (color: string = '#fff', alpha: number = 0.5): string =>
+  `rgba(${hexToRgb(color)}, ${alpha})`
 
 /* --------------------------------- Colors --------------------------------- */
 
-const getColor = (name: any, dom = document.documentElement) =>
+const getColor = (name: any, dom = document.documentElement): string =>
   getComputedStyle(dom).getPropertyValue(`--falcon-${name}`).trim()
 
-const getColors = (dom: any) => ({
+const getColors = (dom: HTMLElement): object => ({
   primary: getColor('primary', dom),
   secondary: getColor('secondary', dom),
   success: getColor('success', dom),
@@ -66,7 +70,7 @@ const getColors = (dom: any) => ({
   emphasis: getColor('emphasis-color', dom)
 })
 
-const getSubtleColors = (dom: any) => ({
+const getSubtleColors = (dom: any): object => ({
   primary: getColor('primary-bg-subtle', dom),
   secondary: getColor('secondary-bg-subtle', dom),
   success: getColor('success-bg-subtle', dom),
@@ -77,7 +81,7 @@ const getSubtleColors = (dom: any) => ({
   dark: getColor('dark-bg-subtle', dom)
 })
 
-const getGrays = (dom: any) => ({
+const getGrays = (dom: HTMLElement): object => ({
   100: getColor('gray-100', dom),
   200: getColor('gray-200', dom),
   300: getColor('gray-300', dom),
@@ -91,27 +95,27 @@ const getGrays = (dom: any) => ({
   1100: getColor('gray-1100', dom)
 })
 
-const hasClass = (el: any, className: any) => {
+const hasClass = (el: HTMLElement, className: string): boolean => {
   !el && false
   return el.classList.value.includes(className)
 }
 
-const addClass = (el: any, className: any) => {
+const addClass = (el: HTMLElement, className: string): void => {
   el.classList.add(className)
 }
 
-const removeClass = (el: any, className: any) => {
+const removeClass = (el: HTMLElement, className: string): void => {
   el.classList.remove(className)
 }
 
-const getOffset = (el: any) => {
+const getOffset = (el: HTMLElement): { top: number; left: number } => {
   const rect = el.getBoundingClientRect()
   const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop
   return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
 }
 
-function isScrolledIntoView(el: any) {
+function isScrolledIntoView(el: HTMLElement) {
   const rect = el.getBoundingClientRect()
   const windowHeight = window.innerHeight || document.documentElement.clientHeight
   const windowWidth = window.innerWidth || document.documentElement.clientWidth
@@ -122,7 +126,7 @@ function isScrolledIntoView(el: any) {
   return vertInView && horInView
 }
 
-const breakpoints: any = {
+const breakpoints: object = {
   xs: 0,
   sm: 576,
   md: 768,
@@ -131,7 +135,7 @@ const breakpoints: any = {
   xxl: 1540
 }
 
-const getBreakpoint = (el: any): number | any => {
+const getBreakpoint = (el: HTMLElement): number | undefined => {
   const classes: string = el && el.classList.value
   if (classes) {
     let classesList: string[] = classes.split(' ')
@@ -139,7 +143,7 @@ const getBreakpoint = (el: any): number | any => {
     let classPop: string | any = classesList.pop()
     classesList = classPop.split('-')
     classPop = classesList.pop()
-    return breakpoints[classPop]
+    return breakpoints[classPop as keyof object]
     // breakpoint =
     //   breakpoints[
     //     classes
@@ -153,21 +157,23 @@ const getBreakpoint = (el: any): number | any => {
   return undefined
 }
 
-const getSystemTheme = () =>
+const getSystemTheme = (): string =>
   window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 
-const isDark = () =>
-  localStorage.getItem('theme') === 'auto' ? getSystemTheme() : localStorage.getItem('theme')
+const isDark = (): string | null => {
+  const theme = localStorage.getItem('theme')
+  return theme === 'auto' ? getSystemTheme() : theme
+}
 /* --------------------------------- Cookie --------------------------------- */
 
-const setCookie = (name: any, value: any, expire: any) => {
+const setCookie = (name: string, value: string, expire: number): void => {
   const expires = new Date()
   expires.setTime(expires.getTime() + expire)
   document.cookie = `${name}=${value};expires=${expires.toUTCString()}`
 }
 
-const getCookie = (name: any) => {
-  const keyValue = document.cookie.match(`(^|;) ?${name}=([^;]*)(;|$)`)
+const getCookie = (name: string) => {
+  const keyValue: RegExpMatchArray | null = document.cookie.match(`(^|;) ?${name}=([^;]*)(;|$)`)
   return keyValue ? keyValue[2] : keyValue
 }
 
@@ -189,31 +195,29 @@ const settings = {
 
 /* ---------------------------------- Store --------------------------------- */
 
-const getItemFromStore = (key: string, defaultValue = undefined, store = localStorage) => {
+const getItemFromStore = (key: string, defaultValue = undefined, store: Storage = localStorage) => {
   try {
-    const aa = store.getItem(key)
-    if (typeof aa == 'string') {
-      return JSON.parse(aa) || defaultValue
-    }
+    return JSON.parse(String(store.getItem(key))) || defaultValue
   } catch {
     return store.getItem(key) || defaultValue
   }
 }
 
-const setItemToStore = (key: any, payload: any, store = localStorage) => store.setItem(key, payload)
+const setItemToStore = (key: string, payload: string, store = localStorage): void =>
+  store.setItem(key, payload)
 const getStoreSpace = (store = localStorage) =>
   parseFloat((escape(encodeURIComponent(JSON.stringify(store))).length / (1024 * 1024)).toFixed(2))
 
 /* get Dates between */
 
-const getDates = (startDate: any, endDate: any, interval = 1000 * 60 * 60 * 24) => {
-  const duration = endDate - startDate
+const getDates = (startDate: Date, endDate: Date, interval = 1000 * 60 * 60 * 24): Date[] => {
+  const duration: number = endDate.getTime() - startDate.getTime()
   const steps = duration / interval
   return Array.from({ length: steps + 1 }, (v, i) => new Date(startDate.valueOf() + interval * i))
 }
 
-const getPastDates = (duration: any) => {
-  let days
+const getPastDates = (duration: string | number): Date[] => {
+  let days: number
 
   switch (duration) {
     case 'week':
@@ -227,7 +231,7 @@ const getPastDates = (duration: any) => {
       break
 
     default:
-      days = duration
+      days = typeof duration == 'string' ? 0 : duration
   }
 
   const date = new Date()
@@ -237,7 +241,8 @@ const getPastDates = (duration: any) => {
 }
 
 /* Get Random Number */
-const getRandomNumber = (min: any, max: any) => Math.floor(Math.random() * (max - min) + min)
+const getRandomNumber = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min) + min)
 
 export {
   docReady,
