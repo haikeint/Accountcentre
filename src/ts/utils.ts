@@ -24,7 +24,7 @@ const camelize = (str: string): string => {
   return `${text.substr(0, 1).toLowerCase()}${text.substr(1)}`
 }
 
-const getData = (el: any, data: string): string | undefined => {
+const getData = (el: any, data: string): {} => {
   try {
     return JSON.parse(String(el.dataset[camelize(data)]))
   } catch (e) {

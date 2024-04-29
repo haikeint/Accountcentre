@@ -1,3 +1,16 @@
+<script lang="ts" setup>
+// fetch('http://localhost:3000/verify', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+//   }
+// })
+//   .then((res) => res.json())
+//   .then((body) => {
+//     console.log(body)
+//   })
+</script>
 <template>
   <div class="card mb-3">
     <div

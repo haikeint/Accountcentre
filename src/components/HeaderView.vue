@@ -1,3 +1,14 @@
+<script lang="ts" setup>
+import { RouterLink, useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/auth'
+const authStore = useAuthStore()
+const router = useRouter()
+
+const logout = () => {
+  authStore.logout()
+  router.push({ name: 'login' })
+}
+</script>
 <template>
   <nav class="navbar navbar-light navbar-glass navbar-top navbar-expand">
     <button
@@ -761,7 +772,9 @@
 
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="pages/user/settings.html">Settings</a>
-            <a class="dropdown-item" href="pages/authentication/card/logout.html">Logout</a>
+            <!-- <a class="dropdown-item" href="pages/authentication/card/logout.html">Logout</a> -->
+            <button class="dropdown-item" @click="logout">Logout</button>
+            <!-- <RouterLink to="/auth" class="dropdown-item">Logout</RouterLink> -->
           </div>
         </div>
       </li>
