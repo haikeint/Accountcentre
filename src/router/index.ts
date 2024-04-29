@@ -1,38 +1,35 @@
+import { UserAuth } from '@/wraper/UserAuth'
+import { Constants } from '@/constants'
+
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '@/views/Account/Home/HomeView.vue'
-import AccountView from '@/views/AccountView.vue'
+import { useAuthStore } from '@/store/auth'
+import route from '@/router/route'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      component: AccountView,
-      children: [
-        {
-          path: '/',
-          name: 'homeview',
-          component: HomeView
-        }
-      ]
-    },
-    {
-      path: '/test',
-      name: 'test',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/TestView.vue')
-    }
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue')
-    // }
-  ]
+  routes: route
 })
 
+const checkAuth = (requireAuth: boolean): string => {
+  let path: string = ''
+  const authStore = useAuthStore()
+
+  if (requireAuth && !authStore.userAuth.isAuthenticated) {
+    const authInfo = JSON.parse(String(localStorage.getItem(Constants.LS_USER_AUTH))) as UserAuth
+
+    if (authInfo?.isAuthenticated) {
+      authStore.userAuth = authInfo
+    } else path = 'login'
+  }
+  return path
+}
+
+router.beforeEach((to, from, next) => {
+  const path = checkAuth(Boolean(to.meta.requireAuth))
+  if (path) next({ name: path })
+  else next()
+})
+
+// router.afterEach((to, from) => {
+// });
 export default router
