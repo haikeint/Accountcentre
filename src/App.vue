@@ -66,8 +66,16 @@ import { RouterView } from 'vue-router'
   margin: 15vh;
 }
 
+.mg-10vh {
+  margin: 10vh;
+}
+
 .disabled {
   pointer-events: none;
   color: #333333;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
 </style>

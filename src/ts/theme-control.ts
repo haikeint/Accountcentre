@@ -147,7 +147,7 @@ const themeControl = () => {
       // const pageUrl = getData(target.node.selectedOptions[0], 'page-url')
       const pageUrl = getData(target.node.value, 'page-url')
       pageUrl
-        ? window.location.replace(pageUrl)
+        ? window.location.replace(pageUrl as string)
         : window.location.replace(window.location.href.split('#')[0])
     }
   })

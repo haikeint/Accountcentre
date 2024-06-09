@@ -7,7 +7,7 @@ const props = defineProps({
   type: { type: String, default: 'text' },
   className: { type: String, default: '' },
   labelClassName: { type: String, default: 'form-label' },
-  value: { type: String, default: '' },
+  value: { type: [String, Boolean], default: '' },
   label: { type: String, default: '' },
   checkboxLabelClassName: { type: String, default: 'form-check-label mb-0' },
   checkboxLabel: { type: String, default: '' },
@@ -24,6 +24,9 @@ const isShow = computed(() =>
 onMounted(() => {
   if (inputText.value)
     for (let key in props.events) inputText.value.addEventListener(key, props.events[key])
+
+  if (inputText.value && typeof props.value == 'boolean')
+    inputText.value.setAttribute('checked', String(props.value))
 })
 </script>
 
@@ -37,6 +40,7 @@ onMounted(() => {
     :class="props.className"
     :placeholder="props.placeholder"
     :disabled="props.disabled"
+    :value="value"
     ref="inputText"
     autocomplete="on"
   />
@@ -44,9 +48,7 @@ onMounted(() => {
     {{ props.checkboxLabel }}
   </label>
   <Transition>
-    <div v-if="isShow" class="invalid-feedback">
-      {{ props.message }}
-    </div>
+    <div v-if="isShow" class="invalid-feedback" v-html="props.message"></div>
   </Transition>
 </template>
 <style scoped>

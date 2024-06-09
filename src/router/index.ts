@@ -1,4 +1,4 @@
-import { UserAuth } from '@/wraper/UserAuth'
+// import { UserAuth } from '@/wraper/UserAuth'
 import { Constants } from '@/constants'
 
 import { createRouter, createWebHistory } from 'vue-router'
@@ -14,11 +14,12 @@ const checkAuth = (requireAuth: boolean): string => {
   let path: string = ''
   const authStore = useAuthStore()
 
-  if (requireAuth && !authStore.userAuth.isAuthenticated) {
-    const authInfo = JSON.parse(String(localStorage.getItem(Constants.LS_USER_AUTH))) as UserAuth
+  if (requireAuth && !authStore.userId) {
+    // const authInfo = JSON.parse(String(localStorage.getItem(Constants.LS_USER_ID))) as UserAuth
+    const userId = localStorage.getItem(Constants.LS_USER_ID)
 
-    if (authInfo?.isAuthenticated) {
-      authStore.userAuth = authInfo
+    if (userId) {
+      authStore.userId = userId
     } else path = 'login'
   }
   return path

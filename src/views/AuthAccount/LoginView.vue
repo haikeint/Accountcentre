@@ -1,8 +1,9 @@
 <script lang="ts" setup>
 import type { IInputEvent } from '@/interface/IInputEvent'
 import type { IUserLogin } from '@/interface/IUserLogin'
+import { SHA256 } from 'crypto-js'
 
-import { FetchResult } from '@/wraper/FetchResult'
+// import { FetchResult } from '@/wraper/FetchResult'
 
 import InputText from '@/components/InputText.vue'
 import ButtonView from '@/components/ButtonView.vue'
@@ -11,9 +12,12 @@ import { Constants } from '@/constants'
 
 import { ref, reactive, toRaw, onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
+// import { useAuthStore } from '@/store/auth'
+import { useMutation } from '@vue/apollo-composable'
+import { loginUserMutate } from '@/graphql/user'
+const { mutate: loginUser } = useMutation(loginUserMutate)
 
-const authStore = useAuthStore()
+// const authStore = useAuthStore()
 const router = useRouter()
 
 const btnLoginMessage = ref<string>('')
@@ -31,9 +35,9 @@ const validState: Record<string, string> = reactive({
 })
 
 onMounted(() => {
-  const remember = localStorage.getItem(Constants.LS_IS_REMEMBER)
+  const remember = localStorage.getItem(Constants.LS_REMEMBER)
   if (remember) {
-    loginState.username = remember
+    loginState.username = JSON.parse(remember)
     loginState.isRemember = true
   }
 })
@@ -66,20 +70,32 @@ const btnRefresh = (event: IInputEvent, isLoading: boolean, message: string) => 
   inputDisabled.value = isLoading
   btnLoginMessage.value = isLoading ? '' : message
   event.target.innerHTML = isLoading
-    ? '<i class="fas fa-spinner fa-spin"></i> Đang đăng nhập'
+    ? '<i class="fas fa-spinner fa-spin"></i> Đang xử lý'
     : 'Đăng nhập'
 }
 
 const handleLogin = (event: IInputEvent) => {
   btnRefresh(event, true, '')
   if (checkValiation()) {
-    authStore.login(toRaw(loginState)).then((result: FetchResult) => {
-      if (result.error) {
-        btnRefresh(event, false, `Lỗi: ${result.error.message}`)
-      } else {
-        router.push({ name: 'home' })
-      }
+    // authStore.login(toRaw(loginState)).then((result: FetchResult) => {
+    //   if (result.error) {
+    //     btnRefresh(event, false, `Lỗi: ${result.error.message}`)
+    //   } else {
+    //     router.push({ name: 'home' })
+    //   }
+    // })
+
+    loginUser({
+      username: loginState.username,
+      password: SHA256(loginState.password).toString()
     })
+      .then((result) => {
+        localStorage.setItem(Constants.LS_USER_ID, result?.data.login.id)
+        router.push({ name: 'home' })
+      })
+      .catch((er) => {
+        btnRefresh(event, false, `Lỗi: ${er.message}`)
+      })
   } else {
     btnRefresh(event, false, '')
   }
@@ -126,6 +142,7 @@ const handleLogin = (event: IInputEvent) => {
                     message="Tài khoản không được để trống."
                     :className="validState.usernameClass"
                     :disabled="inputDisabled"
+                    :value="toRaw(loginState.username)"
                     :events="{
                       blur: validFn.blurUsername,
                       change: (event: IInputEvent) => (loginState.username = event.target.value)
@@ -152,10 +169,11 @@ const handleLogin = (event: IInputEvent) => {
                     <div class="form-check mb-0">
                       <InputText
                         id="cb-remember"
-                        checkboxLabel="Ghi nhớ tài khoản"
+                        checkboxLabel="Lưu đăng nhập"
                         className="form-check-input"
                         type="checkbox"
                         :disabled="inputDisabled"
+                        :value="toRaw(loginState.isRemember)"
                         :events="{
                           change: (event: IInputEvent) =>
                             (loginState.isRemember = Boolean(event.target.value))
@@ -164,8 +182,8 @@ const handleLogin = (event: IInputEvent) => {
                     </div>
                   </div>
                   <div class="col-auto">
-                    <a class="fs-10" href="../../../pages/authentication/split/forgot-password.html"
-                      >Quên mật khẩu?</a
+                    <RouterLink :to="{ name: 'forgetpassword' }" class="fs-10"
+                      >Quên mật khẩu?</RouterLink
                     >
                   </div>
                 </div>

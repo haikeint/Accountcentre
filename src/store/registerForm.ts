@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useRegisterStore = defineStore({
   id: 'register',
   state: () => ({
-    userName: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
