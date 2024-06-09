@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-import { Modal } from 'bootstrap'
+// import { Modal } from 'bootstrap'
 
-import Init from '../ts/theme'
+import Init from '../../ts/theme'
 import { onMounted } from 'vue'
-import NavView from './Account/NavView.vue'
-import HeaderView from './Account/HeaderView.vue'
-import FooterView from './Account/FooterView.vue'
-import ModalView from './Account/ModalView.vue'
+import NavView from '../../components/NavView.vue'
+import HeaderView from '../../components/HeaderView.vue'
+import FooterView from '../../components/FooterView.vue'
+import ModalView from '../../components/ModalView.vue'
+import { RouterView } from 'vue-router'
 
 onMounted(() => {
   Init()
