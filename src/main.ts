@@ -8,12 +8,12 @@ import AlertView from '@/components/AlertView.vue'
 
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client/core'
 import { provideApolloClient } from '@vue/apollo-composable'
-
 const apolloClient = new ApolloClient({
-  link: createHttpLink({
-    uri: 'http://localhost:4000/graphql'
-  }),
-  cache: new InMemoryCache()
+    link: createHttpLink({
+        uri: import.meta.env.VITE_URL_GRAPHQL,
+        credentials: 'include'
+    }),
+    cache: new InMemoryCache()
 })
 
 provideApolloClient(apolloClient)
