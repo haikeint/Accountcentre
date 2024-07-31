@@ -12,7 +12,6 @@ import { Constants } from '@/constants'
 
 import { ref, reactive, toRaw, onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-// import { useAuthStore } from '@/store/auth'
 import { useMutation } from '@vue/apollo-composable'
 import { authencation } from '@/graphql/user'
 
@@ -23,7 +22,6 @@ const className = {
 }
 
 const { mutate: loginUser } = useMutation(authencation)
-const router = useRouter()
 
 const btnLoginMessage = ref<string>('')
 const inputDisabled = ref<boolean>(false)
@@ -146,7 +144,6 @@ const getRecv3Token = () => {
         })
     })
 }
-console.log(window.location)
 const handleLogin = async (event: IInputEvent) => {
     btnRefresh(event, true, '')
     if (!checkValiation()) {
@@ -210,7 +207,7 @@ const HandlePressEnter = () => {
             <div
                 class="bg-holder min-vh-100"
                 style="
-                    background-image: url(src/assets/img/generic/14.jpg);
+                    background-image: url(/assets/img/generic/14.jpg);
                     background-position: 50% 20%;
                 "
             ></div>

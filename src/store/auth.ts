@@ -14,7 +14,6 @@ export const useAuthStore = defineStore({
                     logout
                 }`
                 fetchGraphQL(logoutMutate).then((result) => {
-                    console.log(result)
                     this.isLogin = false
                     localStorage.removeItem(Constants.LS_IS_LOGIN)
                     res(result)

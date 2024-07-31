@@ -100,7 +100,7 @@ console.log(result.value)
             <div
                 class="bg-holder min-vh-100"
                 style="
-                    background-image: url(../src/assets/img/generic/14.jpg);
+                    background-image: url(/assets/img/generic/14.jpg);
                     background-position: 50% 20%;
                 "
             ></div>

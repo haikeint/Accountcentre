@@ -26,7 +26,7 @@ const logout = async () => {
             <div class="d-flex align-items-center">
                 <img
                     class="me-2"
-                    src="@/assets/img/icons/spot-illustrations/falcon.png"
+                    src="/assets/img/icons/spot-illustrations/falcon.png"
                     alt=""
                     width="40"
                 /><span class="font-sans-serif text-primary">falcon</span>
@@ -157,7 +157,7 @@ const logout = async () => {
                                     <div class="file-thumbnail me-2">
                                         <img
                                             class="border h-100 w-100 object-fit-cover rounded-3"
-                                            src="@/assets/img/products/3-thumb.png"
+                                            src="/assets/img/products/3-thumb.png"
                                             alt=""
                                         />
                                     </div>
@@ -177,7 +177,7 @@ const logout = async () => {
                                     <div class="file-thumbnail me-2">
                                         <img
                                             class="img-fluid"
-                                            src="@/assets/img/icons/zip.png"
+                                            src="/assets/img/icons/zip.png"
                                             alt=""
                                         />
                                     </div>
@@ -204,7 +204,7 @@ const logout = async () => {
                                     <div class="avatar avatar-l status-online me-2">
                                         <img
                                             class="rounded-circle"
-                                            src="@/assets/img/team/1.jpg"
+                                            src="/assets/img/team/1.jpg"
                                             alt=""
                                         />
                                     </div>
@@ -219,7 +219,7 @@ const logout = async () => {
                                     <div class="avatar avatar-l me-2">
                                         <img
                                             class="rounded-circle"
-                                            src="@/assets/img/team/2.jpg"
+                                            src="/assets/img/team/2.jpg"
                                             alt=""
                                         />
                                     </div>
@@ -234,7 +234,7 @@ const logout = async () => {
                                     <div class="avatar avatar-l me-2">
                                         <img
                                             class="rounded-circle"
-                                            src="@/assets/img/team/3.jpg"
+                                            src="/assets/img/team/3.jpg"
                                             alt=""
                                         />
                                     </div>
@@ -372,7 +372,7 @@ const logout = async () => {
                                             <div class="avatar avatar-2xl me-3">
                                                 <img
                                                     class="rounded-circle"
-                                                    src="@/assets/img/team/1-thumb.png"
+                                                    src="/assets/img/team/1-thumb.png"
                                                     alt=""
                                                 />
                                             </div>
@@ -423,7 +423,7 @@ const logout = async () => {
                                             <div class="avatar avatar-2xl me-3">
                                                 <img
                                                     class="rounded-circle"
-                                                    src="@/assets/img/icons/weather-sm.jpg"
+                                                    src="/assets/img/icons/weather-sm.jpg"
                                                     alt=""
                                                 />
                                             </div>
@@ -450,7 +450,7 @@ const logout = async () => {
                                             <div class="avatar avatar-xl me-3">
                                                 <img
                                                     class="rounded-circle"
-                                                    src="@/assets/img/logos/oxford.png"
+                                                    src="/assets/img/logos/oxford.png"
                                                     alt=""
                                                 />
                                             </div>
@@ -477,7 +477,7 @@ const logout = async () => {
                                             <div class="avatar avatar-xl me-3">
                                                 <img
                                                     class="rounded-circle"
-                                                    src="@/assets/img/team/10.jpg"
+                                                    src="/assets/img/team/10.jpg"
                                                     alt=""
                                                 />
                                             </div>
@@ -550,7 +550,7 @@ const logout = async () => {
                                             <div class="avatar avatar-2xl">
                                                 <img
                                                     class="rounded-circle"
-                                                    src="@/assets/img/team/3.jpg"
+                                                    src="/assets/img/team/3.jpg"
                                                     alt=""
                                                 />
                                             </div>
@@ -566,7 +566,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/themewagon.png"
+                                                src="/assets/img/nav-icons/themewagon.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -585,7 +585,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/mailbluster.png"
+                                                src="/assets/img/nav-icons/mailbluster.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -604,7 +604,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/google.png"
+                                                src="/assets/img/nav-icons/google.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -623,7 +623,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/spotify.png"
+                                                src="/assets/img/nav-icons/spotify.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -642,7 +642,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/steam.png"
+                                                src="/assets/img/nav-icons/steam.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -661,7 +661,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/github-light.png"
+                                                src="/assets/img/nav-icons/github-light.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -680,7 +680,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/discord.png"
+                                                src="/assets/img/nav-icons/discord.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -699,7 +699,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/xbox.png"
+                                                src="/assets/img/nav-icons/xbox.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -718,7 +718,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/trello.png"
+                                                src="/assets/img/nav-icons/trello.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -737,7 +737,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/hp.png"
+                                                src="/assets/img/nav-icons/hp.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -759,7 +759,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/linkedin.png"
+                                                src="/assets/img/nav-icons/linkedin.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -778,7 +778,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/twitter.png"
+                                                src="/assets/img/nav-icons/twitter.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -797,7 +797,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/facebook.png"
+                                                src="/assets/img/nav-icons/facebook.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -816,7 +816,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/instagram.png"
+                                                src="/assets/img/nav-icons/instagram.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -835,7 +835,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/pinterest.png"
+                                                src="/assets/img/nav-icons/pinterest.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -854,7 +854,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/slack.png"
+                                                src="/assets/img/nav-icons/slack.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -873,7 +873,7 @@ const logout = async () => {
                                             target="_blank"
                                             ><img
                                                 class="rounded"
-                                                src="@/assets/img/nav-icons/deviantart.png"
+                                                src="/assets/img/nav-icons/deviantart.png"
                                                 alt=""
                                                 width="40"
                                                 height="40"
@@ -924,7 +924,7 @@ const logout = async () => {
                     aria-expanded="false"
                 >
                     <div class="avatar avatar-xl">
-                        <img class="rounded-circle" src="@/assets/img/team/3-thumb.png" alt="" />
+                        <img class="rounded-circle" src="/assets/img/team/3-thumb.png" alt="" />
                     </div>
                 </a>
                 <div

@@ -240,7 +240,7 @@ const HandlePressEnter = () => {
         <div class="col-6 d-none d-lg-block position-relative">
             <div
                 class="bg-holder min-vh-100"
-                style="background-image: url(../src/assets/img/generic/19.jpg)"
+                style="background-image: url(/assets/img/generic/19.jpg)"
             ></div>
             <!--/.bg-holder-->
         </div>

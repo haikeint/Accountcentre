@@ -8,7 +8,7 @@ import { RouterView } from 'vue-router'
 
 <style>
 @import 'simplebar/dist/simplebar.min.css';
-@import '@/assets/css/theme.min.css';
+@import '@assets/css/theme.min.css';
 
 .center {
     display: block;

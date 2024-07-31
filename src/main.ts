@@ -13,7 +13,8 @@ const apolloClient = new ApolloClient({
         uri: import.meta.env.VITE_URL_GRAPHQL,
         credentials: 'include'
     }),
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    connectToDevTools: false
 })
 
 provideApolloClient(apolloClient)
