@@ -110,12 +110,16 @@ console.log(result.value)
                 <div class="col-lg-9 col-xl-8 col-xxl-6">
                     <div class="card">
                         <div class="card-header bg-circle-shape bg-shape text-center p-2">
-                            <a
+                            <div
                                 class="font-sans-serif fw-bolder fs-5 z-1 position-relative link-light"
-                                href="../../../index.html"
-                                data-bs-theme="light"
-                                >falcon</a
                             >
+                                <img
+                                    class="me-2"
+                                    src="/assets/img/icons/spot-illustrations/falcon.png"
+                                    alt=""
+                                    width="40"
+                                /><span class="font-sans-serif">S84</span>
+                            </div>
                         </div>
                         <div class="card-body p-4">
                             <div class="row flex-between-center">

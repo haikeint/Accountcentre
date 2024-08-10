@@ -244,17 +244,21 @@ const HandlePressEnter = () => {
             ></div>
             <!--/.bg-holder-->
         </div>
-        <div class="col-sm-10 col-md-6 px-sm-0 mx-auto py-5 mg-10vh">
+        <div class="col-sm-10 col-md-6 px-sm-0 mx-auto py-5 mg-5vh">
             <div class="row justify-content-center g-0">
                 <div class="col-lg-9 col-xl-8 col-xxl-6">
                     <div class="card">
                         <div class="card-header bg-circle-shape bg-shape text-center p-2">
-                            <a
+                            <div
                                 class="font-sans-serif fw-bolder fs-5 z-1 position-relative link-light"
-                                href="../../../index.html"
-                                data-bs-theme="light"
-                                >falcon</a
                             >
+                                <img
+                                    class="me-2"
+                                    src="/assets/img/icons/spot-illustrations/falcon.png"
+                                    alt=""
+                                    width="40"
+                                /><span class="font-sans-serif">S84</span>
+                            </div>
                         </div>
                         <div class="card-body p-4">
                             <div class="row flex-between-center">
@@ -385,9 +389,10 @@ const HandlePressEnter = () => {
 
                             <div class="position-relative mt-4">
                                 <hr />
-                                <div class="divider-content-center">hoặc đăng ký bằng</div>
+                                <!-- <div class="divider-content-center">hoặc đăng ký bằng</div> -->
+                                <div class="divider-content-center"></div>
                             </div>
-                            <div class="row g-2 mt-2">
+                            <!-- <div class="row g-2 mt-2">
                                 <div class="col-sm-6">
                                     <a
                                         class="btn btn-outline-google-plus btn-sm d-block w-100"
@@ -412,7 +417,7 @@ const HandlePressEnter = () => {
                                         facebook</a
                                     >
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
