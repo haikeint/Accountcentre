@@ -83,7 +83,7 @@ import { RouterView } from 'vue-router'
     overflow: hidden;
 }
 
-.grecaptcha-badge {
+/* .grecaptcha-badge {
     visibility: hidden;
-}
+} */
 </style>

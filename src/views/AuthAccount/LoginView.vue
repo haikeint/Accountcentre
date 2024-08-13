@@ -151,7 +151,7 @@ const handleLogin = async (event: IInputEvent) => {
         return
     }
     if (recVersion.value == 2 && recv2Token.value == '') {
-        btnRefresh(event, false, 'Tick Recaptcha trước khi đăng ký!')
+        btnRefresh(event, false, 'Tick Recaptcha trước khi đăng nhập!')
         return
     }
     loginUser({
@@ -172,21 +172,17 @@ const handleLogin = async (event: IInputEvent) => {
         .catch(({ graphQLErrors, networkError }) => {
             if (graphQLErrors) {
                 graphQLErrors.forEach(({ message, extensions }: any) => {
-                    if (message == 'Hành vi nghi ngờ robot') {
+                    if (message == 'Unvalid token') {
                         recv2Key.value += 1
                         recVersion.value = 2
                         btnRefresh(
                             event,
                             false,
-                            `${message}, vui lòng tick vào recaptcha và đăng nhập lại.`
+                            `Hành vi nghi ngờ robot, vui lòng tick vào recaptcha và đăng nhập lại.`
                         )
                     } else {
                         recv2Key.value += 1
-                        btnRefresh(
-                            event,
-                            false,
-                            `Lỗi: ${handleResponse(extensions.statusCode) ?? message}`
-                        )
+                        btnRefresh(event, false, handleResponse(extensions.statusCode) ?? message)
                     }
                 })
             }
