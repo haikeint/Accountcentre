@@ -58,17 +58,20 @@ const btnRefresh = (event: IInputEvent, isLoading: boolean, message: string) => 
         : 'Xử lý'
 }
 
+const refAlert = ref<IAlert>()
 const handleLogin = (event: IInputEvent) => {
-    btnRefresh(event, true, '')
-    if (checkValiation()) {
-        console.log('dang xử lý')
-    } else {
-        btnRefresh(event, false, '')
-    }
+    refAlert.value?.show('danger', 'banh trành hết rồi chời đất ơi')
+    // btnRefresh(event, true, '')
+    // if (checkValiation()) {
+    //     console.log('dang xử lý')
+    // } else {
+    //     btnRefresh(event, false, '')
+    // }
 }
 //--Apolo client
 import { useQuery, useLazyQuery } from '@vue/apollo-composable'
 import gql from 'graphql-tag'
+import type { IAlert } from '@/interface/IAlert'
 
 // const { load, result, loading, error } = useLazyQuery(gql`
 //   query GetUsers {
@@ -113,12 +116,18 @@ console.log(result.value)
                             <div
                                 class="font-sans-serif fw-bolder fs-5 z-1 position-relative link-light"
                             >
-                                <img
+                                <!-- <img
                                     class="me-2"
                                     src="/assets/img/icons/spot-illustrations/falcon.png"
                                     alt=""
                                     width="40"
-                                /><span class="font-sans-serif">S84</span>
+                                /><span class="font-sans-serif">S84</span> -->
+                                <img
+                                    class="me-2"
+                                    src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
+                                    alt=""
+                                    width="90"
+                                />
                             </div>
                         </div>
                         <div class="card-body p-4">
@@ -168,7 +177,7 @@ console.log(result.value)
                                 </div>
                                 <ButtonView
                                     id="btnSend"
-                                    className="btn btn-primary d-block w-100 mt-3 mb-1"
+                                    className="btn btn-info d-block w-100 mt-3 mb-1"
                                     html="Xử lý"
                                     type="button"
                                     :message="btnLoginMessage"
@@ -185,7 +194,7 @@ console.log(result.value)
         </div>
     </div>
     <!-- <ModalView @toggle="(event: Modal) => (MyModal = event)"></ModalView> -->
-    <!-- <AlertView></AlertView> -->
+    <AlertView ref="refAlert"></AlertView>
 </template>
 <style scoped>
 .v-enter-active,

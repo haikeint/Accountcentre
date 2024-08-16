@@ -83,7 +83,31 @@ import { RouterView } from 'vue-router'
     overflow: hidden;
 }
 
+.btn-info {
+    background-color: #17a2b8;
+}
+.navbar-vertical .navbar-nav .nav-item .nav-link.active {
+    color: #17a2b8;
+}
 /* .grecaptcha-badge {
     visibility: hidden;
 } */
+.bg-shape {
+    background-color: gray;
+}
+.bg-shape:after {
+    background-image: unset;
+    background-color: #001c2b;
+}
+.bg-shape:before {
+    background-image: unset;
+    background-color: #001c2b;
+}
+a {
+    color: #17a2b8;
+}
+.form-check-input:checked {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
 </style>

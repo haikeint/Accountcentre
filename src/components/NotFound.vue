@@ -3,16 +3,14 @@ import EmptyView from '@/components/Layout/EmptyView.vue'
 </script>
 <template>
     <EmptyView>
-        <a class="d-flex flex-center mb-4" href="../../index.html"
-            ><img
+        <a class="d-flex flex-center mb-4" href="../../index.html">
+            <img
                 class="me-2"
-                src="/assets/img/icons/spot-illustrations/falcon.png"
+                src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
                 alt=""
-                width="58"
-            /><span class="font-sans-serif text-primary fw-bolder fs-4 d-inline-block"
-                >falcon</span
-            ></a
-        >
+                width="150"
+            />
+        </a>
         <div class="card">
             <div class="card-body p-4 p-sm-5">
                 <div class="fw-black lh-1 text-300 fs-error">404</div>

@@ -252,12 +252,18 @@ const HandlePressEnter = () => {
                             <div
                                 class="font-sans-serif fw-bolder fs-5 z-1 position-relative link-light"
                             >
-                                <img
+                                <!-- <img
                                     class="me-2"
                                     src="/assets/img/icons/spot-illustrations/falcon.png"
                                     alt=""
                                     width="40"
-                                /><span class="font-sans-serif">S84</span>
+                                /><span class="font-sans-serif">S84</span> -->
+                                <img
+                                    class="me-2"
+                                    src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
+                                    alt=""
+                                    width="90"
+                                />
                             </div>
                         </div>
                         <div class="card-body p-4">
@@ -296,7 +302,7 @@ const HandlePressEnter = () => {
                                         <label class="form-label">&nbsp;</label>
                                         <ButtonView
                                             id="btnCheckAccountExist"
-                                            className="btn btn-primary w-100"
+                                            className="btn btn-info w-100"
                                             html="Kiểm tra"
                                         />
                                     </div>
@@ -375,7 +381,7 @@ const HandlePressEnter = () => {
                                 <div class="mb-3">
                                     <ButtonView
                                         id="btnRegister"
-                                        className="btn btn-primary d-block w-100 mt-3"
+                                        className="btn btn-info d-block w-100 mt-3"
                                         html="Đăng ký"
                                         :message="btnLoginMessage"
                                         :messageType="btnLoginMessageType"
