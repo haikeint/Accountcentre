@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 
+let alertTimeout: number | undefined = undefined
+
 const props = defineProps({
-    duration: { type: Number, default: 2000 }
+    duration: { type: Number, default: 3000 }
 })
 
 const info = reactive({
@@ -13,14 +15,15 @@ const info = reactive({
     duration: props.duration
 })
 
-const show = (type: string, message: string) => {
+const show = (type: 'success' | 'danger' | 'warning', message: string) => {
     info.style = `left: ${window.innerWidth / 2}px`
     info.type = type
     info.message = message
     info.enable = true
-
-    setTimeout(() => {
+    if (alertTimeout !== undefined) clearTimeout(alertTimeout)
+    alertTimeout = setTimeout(() => {
         info.enable = false
+        alertTimeout = undefined
     }, info.duration)
 }
 
@@ -41,15 +44,13 @@ defineExpose({
                     <span class="fas fa-check-circle text-white fs-6"></span>
                 </div>
 
-                <p class="mb-0 flex-1">
-                    {{ info.message }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                </p>
-                <button
+                <p class="mb-0 flex-1">{{ info.message }}&nbsp;&nbsp;</p>
+                <!-- <button
                     class="btn-close"
                     type="button"
                     data-bs-dismiss="alert"
                     aria-label="Close"
-                ></button>
+                ></button> -->
             </div>
             <div
                 v-if="info.type == 'danger'"
@@ -59,15 +60,13 @@ defineExpose({
                 <div class="bg-danger me-3 icon-item">
                     <span class="fas fa-times-circle text-white fs-6"></span>
                 </div>
-                <p class="mb-0 flex-1">
-                    {{ info.message }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                </p>
-                <button
+                <p class="mb-0 flex-1">{{ info.message }}&nbsp;&nbsp;</p>
+                <!-- <button
                     class="btn-close"
                     type="button"
                     data-bs-dismiss="alert"
                     aria-label="Close"
-                ></button>
+                ></button> -->
             </div>
             <div
                 v-if="info.type == 'warning'"
@@ -92,15 +91,13 @@ defineExpose({
                         ></path>
                     </svg>
                 </div>
-                <p class="mb-0 flex-1">
-                    {{ info.message }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
-                </p>
-                <button
+                <p class="mb-0 flex-1">{{ info.message }}&nbsp;&nbsp;</p>
+                <!-- <button
                     class="btn-close"
                     type="button"
                     data-bs-dismiss="alert"
                     aria-label="Close"
-                ></button>
+                ></button> -->
             </div>
         </div>
     </Transition>

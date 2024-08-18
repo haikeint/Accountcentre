@@ -22,14 +22,14 @@ const logout = async () => {
         >
             <span class="navbar-toggle-icon"><span class="toggle-line"></span></span>
         </button>
-        <a class="navbar-brand me-1 me-sm-3" href="index.html">
+        <a class="navbar-brand me-1 me-sm-3">
             <div class="d-flex align-items-center">
                 <img
                     class="me-2"
-                    src="/assets/img/icons/spot-illustrations/falcon.png"
+                    src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
                     alt=""
-                    width="40"
-                /><span class="font-sans-serif text-primary">falcon</span>
+                    width="90"
+                />
             </div>
         </a>
         <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">

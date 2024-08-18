@@ -21,7 +21,7 @@ const isReadOnly = ref(true)
 
 const personInfo = reactive({
     name: 'Trần Văn Cảnh',
-    genre: 'Nam',
+    gender: 'Nam',
     birthdate: '10/11/1995',
     address: 'Đ. Hoàng Văn Thụ, Phường 2, Tân Bình, Hồ Chí Minh'
 })
@@ -141,7 +141,7 @@ const confirmedModal = () => {
                                     <td>Giới tính:</td>
                                     <td>
                                         <InputTextReadOnly
-                                            v-model:value="personInfo.genre"
+                                            v-model:value="personInfo.gender"
                                             :isReadOnly="isReadOnly"
                                         />
                                     </td>

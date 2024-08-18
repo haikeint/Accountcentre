@@ -1,3 +1,3 @@
 export interface IAlert {
-    show: (type: string, message: string) => void
+    show: (type: 'success' | 'danger' | 'warning', message: string) => void
 }

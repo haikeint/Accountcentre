@@ -269,7 +269,7 @@ const HandlePressEnter = () => {
                         <div class="card-body p-4">
                             <div class="row flex-between-center">
                                 <div class="col-auto">
-                                    <h3>Đăng ký</h3>
+                                    <h3 class="txt-info">Đăng ký</h3>
                                 </div>
                                 <div class="col-auto fs-10 text-600">
                                     <span class="mb-0 fw-semi-bold">Đã có tài khoản?</span>

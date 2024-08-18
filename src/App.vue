@@ -110,4 +110,46 @@ a {
     background-color: #17a2b8;
     border-color: #17a2b8;
 }
+body {
+    overflow-y: scroll;
+}
+
+/* body {
+    overflow: hidden; 
+    padding-right: 15px; 
+} */
+
+/* body::-webkit-scrollbar {
+    display: none; 
+} */
+::-webkit-scrollbar {
+    width: 8px; /* Chiều rộng của thanh cuộn dọc */
+    height: 8px; /* Chiều cao của thanh cuộn ngang */
+}
+
+/* Tùy chỉnh track của thanh cuộn */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Tùy chỉnh thumb của thanh cuộn */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+/* Tùy chỉnh thumb khi hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+p {
+    margin-bottom: 0rem;
+}
+hr {
+    margin: 0.5rem 0;
+}
+.txt-info {
+    color: #17a2b8;
+}
 </style>

@@ -15,6 +15,11 @@ const route = [
                 path: 'security',
                 name: 'security',
                 component: () => import('@/views/Account/SecurityView.vue')
+            },
+            {
+                path: 'log',
+                name: 'log',
+                component: () => import('@/views/Account/LogView.vue')
             }
         ]
     },

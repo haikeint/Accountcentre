@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, defineExpose } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Modal } from 'bootstrap'
 
 const myModal = ref<Modal | null>(null)

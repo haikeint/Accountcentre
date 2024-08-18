@@ -133,7 +133,7 @@ console.log(result.value)
                         <div class="card-body p-4">
                             <div class="row flex-between-center">
                                 <div class="col-auto">
-                                    <h3>Quên mật khẩu</h3>
+                                    <h3 class="txt-info">Quên mật khẩu</h3>
                                 </div>
                                 <div class="col-auto fs-10 text-600">
                                     <span class="mb-0 fw-semi-bold">Đã nhớ mật khẩu?</span>

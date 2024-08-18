@@ -10,19 +10,13 @@ import NavLabel from './NavLabel.vue'
                     class="btn navbar-toggler-humburger-icon navbar-vertical-toggle"
                     data-bs-toggle="tooltip"
                     data-bs-placement="left"
-                    title="Toggle Navigation"
+                    title="Menu"
                 >
                     <span class="navbar-toggle-icon"><span class="toggle-line"></span></span>
                 </button>
             </div>
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand">
                 <div class="d-flex align-items-center py-3">
-                    <!-- <img
-                        class="me-2"
-                        src="/assets/img/icons/spot-illustrations/falcon.png"
-                        alt=""
-                        width="40"
-                    /><span class="font-sans-serif text-primary">S84</span> -->
                     <img
                         class="me-2"
                         src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
@@ -40,9 +34,8 @@ import NavLabel from './NavLabel.vue'
 
                         <NavItem name="Bảo mật" icon="fas fa-shield-alt" to="security"></NavItem>
 
-                        <NavLabel name="Lịch sử"></NavLabel>
-                        <NavItem name="Đăng nhập" icon="fas fa-history" to="home"></NavItem>
-                        <NavItem name="Giao dịch" icon="fas fa-history" to="home"></NavItem>
+                        <!-- <NavLabel name="Lịch sử"></NavLabel> -->
+                        <NavItem name="Lịch sử" icon="fas fa-history" to="log"></NavItem>
                     </li>
                 </ul>
             </div>
