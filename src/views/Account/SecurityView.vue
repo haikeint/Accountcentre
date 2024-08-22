@@ -33,7 +33,7 @@ const handleButtonChangeAndClose = (event: string) => {
             "
         ></div>
         <div class="card-body position-relative">
-            <div class="row bg-card">
+            <!-- <div class="row bg-card">
                 <div
                     class="col-md-1 col-sm-1 d-none d-sm-flex justify-content-center align-items-center"
                 >
@@ -54,7 +54,7 @@ const handleButtonChangeAndClose = (event: string) => {
                     ></ButtonChangeAndClose>
                 </div>
             </div>
-            <hr />
+            <hr /> -->
             <div class="row">
                 <div
                     class="col-md-1 col-sm-1 d-none d-sm-flex justify-content-center align-items-center"

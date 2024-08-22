@@ -13,7 +13,7 @@ import { Constants } from '@/constants'
 import { ref, reactive, toRaw, onMounted } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
-import { authencation } from '@/graphql/user'
+import { authencation } from '@/graphql/account'
 
 const className = {
     valid: 'form-control valid-txt',

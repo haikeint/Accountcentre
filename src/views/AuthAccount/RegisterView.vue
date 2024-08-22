@@ -11,7 +11,7 @@ import { useRegisterStore } from '@/store/registerForm'
 import { ref, reactive, toRaw, watch } from 'vue'
 
 import { useMutation, useLazyQuery } from '@vue/apollo-composable'
-import { addUserMutate, checkAccountExistQuery } from '@/graphql/user'
+import { addUserMutate, checkAccountExistQuery } from '@/graphql/account'
 
 const recaptchaToken = ref<string>()
 const inputDisabled = ref<boolean>(false)

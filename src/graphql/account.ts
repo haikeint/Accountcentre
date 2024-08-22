@@ -38,4 +38,26 @@ const logoutMutate = gql`
         logout
     }
 `
-export { getUserQuery, addUserMutate, authencation, checkAccountExistQuery, logoutMutate }
+const QUERY_GET_ACCOUNT = gql`
+    query getAccount {
+        account {
+            username
+            id
+            createdat
+            fullname
+            gender
+            birthdate
+            address
+            email
+        }
+    }
+`
+
+export {
+    getUserQuery,
+    addUserMutate,
+    authencation,
+    checkAccountExistQuery,
+    logoutMutate,
+    QUERY_GET_ACCOUNT
+}
