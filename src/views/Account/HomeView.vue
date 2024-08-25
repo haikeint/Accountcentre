@@ -7,6 +7,12 @@ import type { IModal } from '@/interface/IModal'
 import type { IAlert } from '@/interface/IAlert'
 import { useAccountStore } from '@/store/account'
 
+import { useMutation } from '@vue/apollo-composable'
+import { MUTATION_UPDATE_INFO } from '@/graphql/account'
+import { AccountResult } from '@/wraper/AccountResult'
+
+const { mutate, loading, error } = useMutation(MUTATION_UPDATE_INFO)
+
 const accountStore = useAccountStore()
 
 onMounted(() => {
@@ -58,7 +64,21 @@ const actionEdit = () => {
 const confirmedModal = () => {
     isReadOnly.value = !isReadOnly.value
     refModal.value?.hide()
-    refAlert.value?.show('success', 'Cập nhật hoàn tất.')
+    mutate({
+        objectInput: {
+            address: accountStore.account.address,
+            birthdate: accountStore.account.birthdate,
+            fullname: accountStore.account.fullname,
+            gender: AccountResult.convertGender2Number(accountStore.account.gender)
+        }
+    })
+        .then((res: any) => {
+            console.log(res)
+            refAlert.value?.show('success', 'Cập nhật hoàn tất.')
+        })
+        .catch((err: any) => {
+            refAlert.value?.show('danger', 'Cập nhật thất bại.')
+        })
     console.log(toRaw(accountStore.account))
 }
 </script>

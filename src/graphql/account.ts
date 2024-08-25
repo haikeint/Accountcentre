@@ -54,11 +54,23 @@ const MUTATION_LOGOUT = `
         logout
     }
 `
+const MUTATION_UPDATE_INFO = gql`
+    mutation Updateinfo($objectInput: UpdateInfoInput!) {
+        updateInfo(objectInput: $objectInput)
+    }
+`
+const MUTATION_UPDATE_SECURE = gql`
+    mutation UpdateSecure($objectInput: UpdateSecureInput!) {
+        updateSecure(objectInput: $objectInput)
+    }
+`
 export {
     getUserQuery,
     addUserMutate,
     authencation,
     checkAccountExistQuery,
     QUERY_GET_ACCOUNT,
-    MUTATION_LOGOUT
+    MUTATION_LOGOUT,
+    MUTATION_UPDATE_INFO,
+    MUTATION_UPDATE_SECURE
 }

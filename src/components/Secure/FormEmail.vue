@@ -3,10 +3,14 @@ import { reactive, ref } from 'vue'
 import InputText from '../Util/InputText.vue'
 import LabelComp from '../Util/LabelComp.vue'
 import type { IModal } from '../../interface/IModal'
-import type { IAlert } from '../../interface/IAlert'
+
+const emit = defineEmits(['update'])
+
+defineProps({
+    isExisted: { type: Boolean, required: true }
+})
 
 const refModal = ref<IModal>()
-const refAlert = ref<IAlert>()
 
 const email = reactive({
     old: '',
@@ -16,10 +20,13 @@ const email = reactive({
 const update = () => {
     refModal.value?.show()
 }
+
 const confirmedModal = () => {
-    console.log(123)
+    emit('update', {
+        oldEmail: email.old,
+        newEmail: email.new
+    })
     refModal.value?.hide()
-    refAlert.value?.show('success', 'Cập nhật hoàn tất.')
 }
 </script>
 <template>
@@ -49,6 +56,5 @@ const confirmedModal = () => {
             </div>
         </div>
         <ModalView ref="refModal" @confirmedModal="confirmedModal"></ModalView>
-        <AlertView ref="refAlert"></AlertView>
     </div>
 </template>

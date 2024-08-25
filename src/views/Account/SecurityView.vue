@@ -9,6 +9,11 @@ import type { IAlert } from '@/interface/IAlert'
 
 import { useAccountStore } from '@/store/account'
 
+import { useMutation } from '@vue/apollo-composable'
+import { MUTATION_UPDATE_SECURE } from '@/graphql/account'
+
+const { mutate, loading, error } = useMutation(MUTATION_UPDATE_SECURE)
+
 const accountStore = useAccountStore()
 
 onMounted(() => {
@@ -24,6 +29,19 @@ const expandStatus = reactive<any>({
     email: false,
     idCode: false
 })
+
+const updateSecure = (object: object) => {
+    mutate({
+        objectInput: object
+    })
+        .then((res) => {
+            if (res?.data.updateSecure) refAlert.value?.show('success', 'Cập nhật thành công.')
+            if (!res?.data.updateSecure) refAlert.value?.show('danger', 'Cập nhật thất bại.')
+        })
+        .catch((err) => {
+            refAlert.value?.show('danger', 'Cập nhật thất bại.')
+        })
+}
 
 const handleButtonChangeAndClose = (event: string) => {
     for (const key in expandStatus) {
@@ -89,7 +107,7 @@ const handleButtonChangeAndClose = (event: string) => {
                 </div>
             </div>
             <Transition name="slide">
-                <FormPassword v-if="expandStatus.password"></FormPassword>
+                <FormPassword v-if="expandStatus.password" @update="updateSecure" />
             </Transition>
             <hr />
             <div class="row">
@@ -117,7 +135,11 @@ const handleButtonChangeAndClose = (event: string) => {
                 </div>
             </div>
             <Transition name="slide">
-                <FormPhoneNumber v-if="expandStatus.phoneNumber"></FormPhoneNumber>
+                <FormPhoneNumber
+                    v-if="expandStatus.phoneNumber"
+                    :isExisted="accountStore.account.phone.length > 0"
+                    @update="updateSecure"
+                />
             </Transition>
             <hr />
             <div class="row">
@@ -146,9 +168,13 @@ const handleButtonChangeAndClose = (event: string) => {
                 </div>
             </div>
             <Transition name="slide">
-                <FormEmail v-if="expandStatus.email"></FormEmail>
+                <FormEmail
+                    v-if="expandStatus.email"
+                    :isExisted="accountStore.account.email.length > 0"
+                    @update="updateSecure"
+                ></FormEmail>
             </Transition>
-            <hr />
+            <!-- <hr />
             <div class="row">
                 <div
                     class="col-md-1 col-sm-1 d-none d-sm-flex justify-content-center align-items-center"
@@ -169,7 +195,7 @@ const handleButtonChangeAndClose = (event: string) => {
                         @click="handleButtonChangeAndClose"
                     ></ButtonChangeAndClose>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <AlertView ref="refAlert"></AlertView>
