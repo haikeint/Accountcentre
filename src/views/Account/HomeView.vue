@@ -1,14 +1,17 @@
 <script lang="ts" setup>
-import { ref, reactive, watch } from 'vue'
+import { ref, toRaw, onMounted } from 'vue'
 
 import InputTextReadOnly from '@/components/Input/InputTextReadOnly.vue'
 
 import type { IModal } from '@/interface/IModal'
 import type { IAlert } from '@/interface/IAlert'
-import { AccountResult } from '@/wraper/AccountResult'
-import { getErrorMessage } from '@/graphql/util'
-import { useQuery } from '@vue/apollo-composable'
-import { QUERY_GET_ACCOUNT } from '@/graphql/account'
+import { useAccountStore } from '@/store/account'
+
+const accountStore = useAccountStore()
+
+onMounted(() => {
+    if (accountStore.account.id.length == 0) accountStore.getAccount()
+})
 
 interface RefInput {
     focus: () => void
@@ -25,25 +28,6 @@ const refGender = ref<RefInput>()
 const refBirthdate = ref<RefInput>()
 const refAddress = ref<RefInput>()
 
-const account = reactive<AccountResult>(new AccountResult())
-
-const {
-    result: queryResult,
-    loading: queryLoading,
-    error: queryError
-} = useQuery<Record<'account', AccountResult>>(QUERY_GET_ACCOUNT)
-
-watch(queryLoading, () => {
-    if (queryError.value !== null) {
-        refAlert.value?.show('danger', getErrorMessage(queryError.value))
-        return
-    }
-    for (const key in queryResult.value?.account) {
-        let accountResult = queryResult.value.account[key as keyof AccountResult]
-        if (accountResult !== null) account[key as keyof AccountResult] = accountResult
-    }
-})
-
 const actionEdit = () => {
     if (!isReadOnly.value) {
         refModal.value?.show()
@@ -52,19 +36,19 @@ const actionEdit = () => {
 
     isReadOnly.value = !isReadOnly.value
 
-    if (!account.fullname) {
+    if (!accountStore.account.fullname) {
         refFullname.value?.focus()
         return
     }
-    if (!account.gender) {
+    if (!accountStore.account.gender) {
         refGender.value?.focus()
         return
     }
-    if (!account.birthdate) {
+    if (!accountStore.account.birthdate) {
         refBirthdate.value?.focus()
         return
     }
-    if (!account.address) {
+    if (!accountStore.account.address) {
         refAddress.value?.focus()
         return
     }
@@ -75,12 +59,12 @@ const confirmedModal = () => {
     isReadOnly.value = !isReadOnly.value
     refModal.value?.hide()
     refAlert.value?.show('success', 'Cập nhật hoàn tất.')
-    console.log(1)
+    console.log(toRaw(accountStore.account))
 }
 </script>
 <template>
     <div
-        v-if="queryLoading"
+        v-if="accountStore.account.id.length == 0"
         class="spinner-border text-info"
         role="status"
         style="margin-left: 50vh; margin-top: 10vh"
@@ -113,15 +97,15 @@ const confirmedModal = () => {
                                 <tbody>
                                     <tr>
                                         <td>Tên đăng nhập:</td>
-                                        <td>{{ account.username }}</td>
+                                        <td>{{ accountStore.account.username }}</td>
                                     </tr>
                                     <tr>
                                         <td>Mã tài khoản:</td>
-                                        <td>{{ account.id }}</td>
+                                        <td>{{ accountStore.account.id }}</td>
                                     </tr>
                                     <tr>
                                         <td>Ngày đăng ký:</td>
-                                        <td>{{ account.createdat }}</td>
+                                        <td>{{ accountStore.account.createdat }}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -173,7 +157,7 @@ const confirmedModal = () => {
                                         <td>Họ và tên:</td>
                                         <td>
                                             <InputTextReadOnly
-                                                v-model:value="account.fullname"
+                                                v-model:value="accountStore.account.fullname"
                                                 :isReadOnly="isReadOnly"
                                                 :placeholder="placeholder"
                                                 ref="refFullname"
@@ -184,7 +168,7 @@ const confirmedModal = () => {
                                         <td>Giới tính:</td>
                                         <td>
                                             <InputTextReadOnly
-                                                v-model:value="account.gender"
+                                                v-model:value="accountStore.account.gender"
                                                 :isReadOnly="isReadOnly"
                                                 :placeholder="placeholder"
                                                 ref="refGender"
@@ -195,7 +179,7 @@ const confirmedModal = () => {
                                         <td>Ngày sinh:</td>
                                         <td>
                                             <InputTextReadOnly
-                                                v-model:value="account.birthdate"
+                                                v-model:value="accountStore.account.birthdate"
                                                 :isReadOnly="isReadOnly"
                                                 :placeholder="placeholder"
                                                 ref="refBirthdate"
@@ -206,7 +190,7 @@ const confirmedModal = () => {
                                         <td>Địa chỉ:</td>
                                         <td>
                                             <InputTextReadOnly
-                                                v-model:value="account.address"
+                                                v-model:value="accountStore.account.address"
                                                 :isReadOnly="isReadOnly"
                                                 :placeholder="placeholder"
                                                 ref="refAddress"

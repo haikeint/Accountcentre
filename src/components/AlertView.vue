@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 
-let alertTimeout: number | undefined = undefined
+let alertTimeoutId: ReturnType<typeof setTimeout> | null = null
 
 const props = defineProps({
     duration: { type: Number, default: 3000 }
@@ -20,10 +20,10 @@ const show = (type: 'success' | 'danger' | 'warning', message: string) => {
     info.type = type
     info.message = message
     info.enable = true
-    if (alertTimeout !== undefined) clearTimeout(alertTimeout)
-    alertTimeout = setTimeout(() => {
+    if (alertTimeoutId) clearTimeout(alertTimeoutId)
+    alertTimeoutId = setTimeout(() => {
         info.enable = false
-        alertTimeout = undefined
+        alertTimeoutId = null
     }, info.duration)
 }
 

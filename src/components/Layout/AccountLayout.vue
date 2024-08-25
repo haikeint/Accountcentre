@@ -34,11 +34,12 @@ onMounted(() => {
             <!-- CONTENT------------------- -->
             <div class="content">
                 <HeaderView />
-                <RouterView v-slot="{ Component }">
+                <!-- <RouterView v-slot="{ Component }">
                     <KeepAlive include="HomeView">
                         <component :is="Component"></component>
                     </KeepAlive>
-                </RouterView>
+                </RouterView> -->
+                <RouterView />
                 <FooterView />
             </div>
 

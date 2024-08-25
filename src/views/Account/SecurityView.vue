@@ -1,9 +1,21 @@
 <script lang="ts" setup>
-import { reactive } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import ButtonChangeAndClose from '@/components/Util/ButtonChangeAndClose.vue'
 import FormPassword from '@/components/Secure/FormPassword.vue'
 import FormPhoneNumber from '@/components/Secure/FormPhoneNumber.vue'
 import FormEmail from '@/components/Secure/FormEmail.vue'
+
+import type { IAlert } from '@/interface/IAlert'
+
+import { useAccountStore } from '@/store/account'
+
+const accountStore = useAccountStore()
+
+onMounted(() => {
+    if (accountStore.account.id.length == 0) accountStore.getAccount()
+})
+
+const refAlert = ref<IAlert>()
 
 const expandStatus = reactive<any>({
     authen_gg: false,
@@ -87,7 +99,10 @@ const handleButtonChangeAndClose = (event: string) => {
                     <span class="fas fa-mobile-alt c-fa-25x"></span>
                 </div>
                 <div class="col-md-6 col-sm-9">
-                    <h5>Số điện thoại: +84 ****0741</h5>
+                    <h5 v-if="accountStore.account.phone || false">
+                        Số điện thoại: {{ accountStore.account.phone }}
+                    </h5>
+                    <h5 v-else>Số điện thoại: <i>(chưa có thông tin)</i></h5>
                     <p>
                         Số điện thoại này có thể sử dụng để đăng nhập, và nhận Mã xác nhận cho nhưng
                         hoạt động tài khoản như đổi mật khẩu.
@@ -112,7 +127,10 @@ const handleButtonChangeAndClose = (event: string) => {
                     <span class="fas fa-envelope c-fa-25x"></span>
                 </div>
                 <div class="col-md-6 col-sm-9">
-                    <h5>Email: hai****@gmail.com</h5>
+                    <h5 v-if="accountStore.account.email || false">
+                        Email: {{ accountStore.account.email }}
+                    </h5>
+                    <h5 v-else>Email: <i>(chưa có thông tin)</i></h5>
                     <p>
                         Địa chỉ Email này có thể sử dụng để đăng nhập. Nếu đã được xác nhận, nó cũng
                         có thể được sử dụng để thay đổi mật khẩu khi không có công cụ bảo mật nào
@@ -154,6 +172,7 @@ const handleButtonChangeAndClose = (event: string) => {
             </div>
         </div>
     </div>
+    <AlertView ref="refAlert"></AlertView>
 </template>
 <style>
 /* CSS để điều khiển hiệu ứng slide */

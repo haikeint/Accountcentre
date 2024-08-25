@@ -1,6 +1,7 @@
 import { Constants } from '@/constants'
 import { defineStore } from 'pinia'
 import fetchGraphQL from '@/graphql/fetchGraphQL'
+import { MUTATION_LOGOUT } from '@/graphql/account'
 
 export const useAuthStore = defineStore({
     id: 'auth',
@@ -10,10 +11,7 @@ export const useAuthStore = defineStore({
     actions: {
         logout() {
             return new Promise((res) => {
-                const logoutMutate = `mutation Logout {
-                    logout
-                }`
-                fetchGraphQL(logoutMutate).then((result) => {
+                fetchGraphQL(MUTATION_LOGOUT).then((result) => {
                     this.isLogin = false
                     localStorage.removeItem(Constants.LS_IS_LOGIN)
                     res(result)

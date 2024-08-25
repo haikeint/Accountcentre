@@ -33,12 +33,7 @@ const checkAccountExistQuery = gql`
     }
 `
 
-const logoutMutate = gql`
-    mutation Logout {
-        logout
-    }
-`
-const QUERY_GET_ACCOUNT = gql`
+const QUERY_GET_ACCOUNT = `
     query getAccount {
         account {
             username
@@ -49,15 +44,21 @@ const QUERY_GET_ACCOUNT = gql`
             birthdate
             address
             email
+            phone
         }
     }
 `
 
+const MUTATION_LOGOUT = `
+    mutation Logout {
+        logout
+    }
+`
 export {
     getUserQuery,
     addUserMutate,
     authencation,
     checkAccountExistQuery,
-    logoutMutate,
-    QUERY_GET_ACCOUNT
+    QUERY_GET_ACCOUNT,
+    MUTATION_LOGOUT
 }
