@@ -7,7 +7,8 @@ const emit = defineEmits(['update:value'])
 const props = defineProps({
     isReadOnly: { type: Boolean, required: true },
     value: { type: String, required: true },
-    placeholder: { type: String, required: true }
+    placeholder: { type: String, required: true },
+    disabled: { type: Boolean, default: false }
 })
 
 const updateValue = (event: Event) => {
@@ -33,6 +34,7 @@ defineExpose({
         :value="props.value"
         :placeholder="placeholder"
         @input="updateValue"
+        :disabled="disabled"
         ref="refInput"
     />
 </template>

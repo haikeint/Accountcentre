@@ -300,11 +300,12 @@ const HandlePressEnter = () => {
                                     </div>
                                     <div class="col-4">
                                         <label class="form-label">&nbsp;</label>
-                                        <ButtonView
+                                        <div><a class="btn btn-info">Kiểm tra</a></div>
+                                        <!-- <ButtonView
                                             id="btnCheckAccountExist"
                                             className="btn btn-info w-100"
                                             html="Kiểm tra"
-                                        />
+                                        /> -->
                                     </div>
                                 </div>
                                 <div class="mb-1">
