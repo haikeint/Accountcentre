@@ -17,12 +17,7 @@ import NavLabel from './NavLabel.vue'
             </div>
             <a class="navbar-brand">
                 <div class="d-flex align-items-center py-3">
-                    <img
-                        class="me-2"
-                        src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
-                        alt=""
-                        width="80"
-                    />
+                    <img class="me-2" src="/assets/logo/create/hbplay.png" width="180" />
                 </div>
             </a>
         </div>

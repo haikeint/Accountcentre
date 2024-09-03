@@ -252,17 +252,10 @@ const HandlePressEnter = () => {
                             <div
                                 class="font-sans-serif fw-bolder fs-5 z-1 position-relative link-light"
                             >
-                                <!-- <img
-                                    class="me-2"
-                                    src="/assets/img/icons/spot-illustrations/falcon.png"
-                                    alt=""
-                                    width="40"
-                                /><span class="font-sans-serif">S84</span> -->
                                 <img
                                     class="me-2"
-                                    src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
-                                    alt=""
-                                    width="90"
+                                    src="/assets/logo/create/hbplay.png"
+                                    width="220"
                                 />
                             </div>
                         </div>

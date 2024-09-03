@@ -221,12 +221,11 @@ const HandlePressEnter = () => {
                                     src="/assets/img/icons/spot-illustrations/falcon.png"
                                     alt=""
                                     width="40"
-                                /><span class="font-sans-serif">S84</span> -->
+                                /><span class="font-sans-serif">HBPlay</span> -->
                                 <img
                                     class="me-2"
-                                    src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
-                                    alt=""
-                                    width="90"
+                                    src="/assets/logo/create/hbplay.png"
+                                    width="220"
                                 />
                             </div>
                         </div>

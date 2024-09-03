@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
+import { useAccountStore } from '@/store/account'
+
 const authStore = useAuthStore()
+const accountStore = useAccountStore()
 const router = useRouter()
 
 const logout = async () => {
@@ -24,12 +27,7 @@ const logout = async () => {
         </button>
         <a class="navbar-brand me-1 me-sm-3">
             <div class="d-flex align-items-center">
-                <img
-                    class="me-2"
-                    src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
-                    alt=""
-                    width="90"
-                />
+                <img class="me-2" src="/assets/logo/create/hbplay.png" width="220" />
             </div>
         </a>
         <ul class="navbar-nav navbar-nav-icons ms-auto flex-row align-items-center">
@@ -37,7 +35,10 @@ const logout = async () => {
                 <span class="fas fa-dollar-sign"></span> 1,900,000
             </li>
             <li class="nav-item mt-3 me-3 fs-9 text-dark">
-                <span class="far fa-user"></span> haikeint
+                <div v-if="accountStore.account.username.length > 0">
+                    <span class="far fa-user"></span> {{ accountStore.account.username }}
+                </div>
+                <div v-else><span class="fas fa-spinner fa-spin"></span></div>
             </li>
             <li class="nav-item">
                 <button

@@ -1,15 +1,21 @@
 <script lang="ts" setup>
+import type { IAlert } from '@/interface/IAlert'
+
 import StepNavItem from '@/components/StepNavItem.vue'
 import RadioCmp from '@/components/Form/RadioCmp.vue'
-import InputTextFloadtingCmp from '@/components/Form/InputTextFloadtingCmp.vue'
 import InputText from '@/components/InputText.vue'
 import ReCaptchav2 from '@/components/ReCaptchav2.vue'
+import CountDown from '@/components/CountDown.vue'
+
 import { ref, reactive, toRaw } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
-import type { IAlert } from '@/interface/IAlert'
+import { RouterLink } from 'vue-router'
+
 import axios from 'axios'
 import type { IInputEvent } from '@/interface/IInputEvent'
-import CountDown from '@/components/CountDown.vue'
+
+import { URL_FR_USERNAME, URL_FR_SEND_CODE, URL_FR_VERIRY_CODE } from '@/api/url'
+import { formatString } from '@/Util/util'
+
 const refAlert = ref<IAlert>()
 const recaptchaToken = ref<string>()
 const recaptchaComponentKey = ref<number>(0)
@@ -42,6 +48,7 @@ const validState = reactive({
     passwordClass: 'form-control',
     confirmPasswordClass: 'form-control'
 })
+
 const validFn = {
     checkCode: (value: string) => {
         let validReslut: boolean = true
@@ -78,12 +85,10 @@ const validFn = {
                 message.push('Không được có kí tự đặc biệt')
             }
         }
-        if (message.length > 0) {
-            inputValidMessage.username = validReslut ? '' : message.join('<br>')
-            validState.usernameClass = validReslut
-                ? 'form-control valid-txt'
-                : 'form-control invalid-txt'
-        }
+        inputValidMessage.username = validReslut ? '' : message.join('<br>')
+        validState.usernameClass = validReslut
+            ? 'form-control valid-txt'
+            : 'form-control invalid-txt'
     },
     checkPassword: (value: string) => {
         let validReslut: boolean = true
@@ -152,10 +157,7 @@ const hdlMessage = (validMes: string, invalid: string) => {
     invalidMessage.value = invalid
 }
 const hdlSetep1 = async () => {
-    if (!account.username) {
-        hdlMessage('', 'Tài khoản không được để trống')
-        return false
-    }
+    if (!checkValiationSetep1()) return false
 
     if (!recaptchaToken.value) {
         hdlMessage('', 'Tick Recaptcha trước khi qua bước tiếp theo!')
@@ -163,14 +165,11 @@ const hdlSetep1 = async () => {
     }
     disabled.value = true
     try {
-        const response = await axios.get(
-            `https://localhost:5000/api/forgetpassword/username/${account.username}`,
-            {
-                params: {
-                    token: recaptchaToken.value
-                }
+        const response = await axios.get(formatString(URL_FR_USERNAME, account.username), {
+            params: {
+                token: recaptchaToken.value
             }
-        )
+        })
         disabled.value = false
         if (response.status != 200 && response.data.error) {
             hdlMessage('', response.data.error)
@@ -197,7 +196,7 @@ const sendCode = async () => {
     hdlMessage('', '')
     try {
         disabled.value = true
-        const response = await axios.get(`https://localhost:5000/api/forgetpassword/sendcode`, {
+        const response = await axios.get(formatString(URL_FR_SEND_CODE), {
             params: {
                 token: account.token
             }
@@ -208,13 +207,6 @@ const sendCode = async () => {
             return false
         }
         account.token = response.data.token
-        // hdlMessage('Đã gửi code vào Email.', '')
-        // leftTime.value = MAX_LEFTTIME
-        // test = MAX_LEFTTIME
-        // let alertTimeoutId: ReturnType<typeof setInterval> = setInterval(() => {
-        //     leftTime.value--
-        //     if (leftTime.value == 0) clearInterval(alertTimeoutId)
-        // }, 1000)
         displayCoutdown.value = true
         return true
     } catch (error) {
@@ -233,15 +225,12 @@ const hdlSetep3 = async () => {
     try {
         if (!checkValiationSetep3()) return false
         disabled.value = true
-        const response = await axios.get(
-            `https://localhost:5000/api/forgetpassword/verifycode/${account.code}`,
-            {
-                params: {
-                    token: account.token,
-                    password: account.password
-                }
+        const response = await axios.get(formatString(URL_FR_VERIRY_CODE, account.code), {
+            params: {
+                token: account.token,
+                password: account.password
             }
-        )
+        })
         account.token = ''
         return response.status == 200
     } catch (error: any) {
@@ -299,9 +288,8 @@ const btnPrevious = () => {
                             >
                                 <img
                                     class="me-2"
-                                    src="/assets/logo/own/fulllogo_transparent_nobuffer.png"
-                                    alt=""
-                                    width="90"
+                                    src="/assets/logo/create/hbplay.png"
+                                    width="220"
                                 />
                             </div>
                         </div>
@@ -413,7 +401,7 @@ const btnPrevious = () => {
                                                     <InputText
                                                         id="ipres-code"
                                                         :className="validState.codeClass"
-                                                        label="Mã xác nhận"
+                                                        label="Mã OTP"
                                                         placeholder="123123"
                                                         :message="inputValidMessage.code"
                                                         :value="toRaw(account.code)"
@@ -450,7 +438,7 @@ const btnPrevious = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div v-if="setepCurrent == 3" class="row gx-2 mb-3">
+                                            <div v-if="setepCurrent == 3" class="row gx-2">
                                                 <div class="col-sm-6">
                                                     <InputText
                                                         id="ipres-password"
