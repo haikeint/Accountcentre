@@ -4,20 +4,25 @@ import ButtonChangeAndClose from '@/components/Util/ButtonChangeAndClose.vue'
 import FormPassword from '@/components/Secure/FormPassword.vue'
 import FormPhoneNumber from '@/components/Secure/FormPhoneNumber.vue'
 import FormEmail from '@/components/Secure/FormEmail.vue'
+import { HttpStatusCode } from '@/Util/RequestError'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 import type { IAlert } from '@/interface/IAlert'
 
 import { useAccountStore } from '@/store/account'
+import { useNotifyStore } from '@/store/notify'
 
 import { useMutation } from '@vue/apollo-composable'
 import { MUTATION_UPDATE_SECURE } from '@/graphql/account'
 
-const { mutate, loading, error } = useMutation(MUTATION_UPDATE_SECURE)
+const { mutate } = useMutation(MUTATION_UPDATE_SECURE)
 
 const accountStore = useAccountStore()
+const notifyStore = useNotifyStore()
 
 onMounted(() => {
-    if (accountStore.account.id.length == 0) accountStore.getAccount()
+    if (accountStore.account.id.length == 0) accountStore.getAccount(router)
 })
 
 const refAlert = ref<IAlert>()
@@ -38,8 +43,17 @@ const updateSecure = (object: object) => {
             if (res?.data.updateSecure) refAlert.value?.show('success', 'Cập nhật thành công.')
             if (!res?.data.updateSecure) refAlert.value?.show('danger', 'Cập nhật thất bại.')
         })
-        .catch((err) => {
-            refAlert.value?.show('danger', 'Cập nhật thất bại.')
+        .catch(({ graphQLErrors }) => {
+            if (graphQLErrors) {
+                graphQLErrors.forEach(({ extensions }: any) => {
+                    if (extensions.statusCode == HttpStatusCode.Unauthorized) {
+                        notifyStore.setNotify('Phiên đăng nhập hết hạn')
+                        router.push({ name: 'login' })
+                    }
+                })
+            } else {
+                refAlert.value?.show('danger', 'Cập nhật thất bại.')
+            }
         })
 }
 

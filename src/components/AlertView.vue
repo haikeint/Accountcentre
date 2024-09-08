@@ -15,7 +15,8 @@ const info = reactive({
     duration: props.duration
 })
 
-const show = (type: 'success' | 'danger' | 'warning', message: string) => {
+const show = (type: 'success' | 'danger' | 'warning', message: string | null) => {
+    if (message == null) return
     info.style = `left: ${window.innerWidth / 2}px`
     info.type = type
     info.message = message

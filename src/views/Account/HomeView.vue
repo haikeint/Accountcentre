@@ -1,22 +1,27 @@
 <script lang="ts" setup>
 import { ref, toRaw, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 import InputTextReadOnly from '@/components/Input/InputTextReadOnly.vue'
+import { HttpStatusCode } from '@/Util/RequestError'
 
 import type { IModal } from '@/interface/IModal'
 import type { IAlert } from '@/interface/IAlert'
 import { useAccountStore } from '@/store/account'
+import { useNotifyStore } from '@/store/notify'
 
 import { useMutation } from '@vue/apollo-composable'
 import { MUTATION_UPDATE_INFO } from '@/graphql/account'
 import { AccountResult } from '@/wraper/AccountResult'
 
-const { mutate, loading, error } = useMutation(MUTATION_UPDATE_INFO)
+const { mutate } = useMutation(MUTATION_UPDATE_INFO)
 
 const accountStore = useAccountStore()
+const notifyStore = useNotifyStore()
 
 onMounted(() => {
-    if (accountStore.account.id.length == 0) accountStore.getAccount()
+    if (accountStore.account.id.length == 0) accountStore.getAccount(router)
 })
 
 interface RefInput {
@@ -72,14 +77,21 @@ const confirmedModal = () => {
             gender: AccountResult.convertGender2Number(accountStore.account.gender)
         }
     })
-        .then((res: any) => {
-            console.log(res)
+        .then(() => {
             refAlert.value?.show('success', 'Cập nhật hoàn tất.')
         })
-        .catch((err: any) => {
-            refAlert.value?.show('danger', 'Cập nhật thất bại.')
+        .catch(({ graphQLErrors }) => {
+            if (graphQLErrors) {
+                graphQLErrors.forEach(({ extensions }: any) => {
+                    if (extensions.statusCode == HttpStatusCode.Unauthorized) {
+                        notifyStore.setNotify('Phiên đăng nhập hết hạn')
+                        router.push({ name: 'login' })
+                    }
+                })
+            } else {
+                refAlert.value?.show('danger', 'Cập nhật thất bại.')
+            }
         })
-    console.log(toRaw(accountStore.account))
 }
 </script>
 <template>

@@ -19,6 +19,7 @@ const checkAuth = (requireAuth: boolean): string => {
         const isLogin = localStorage.getItem(Constants.LS_IS_LOGIN)
         if (isLogin && isLogin == String(true)) {
             authStore.isLogin = true
+            authStore.trackExpire(router)
         } else path = 'login'
     }
     return path

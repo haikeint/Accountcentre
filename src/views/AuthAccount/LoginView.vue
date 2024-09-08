@@ -3,7 +3,7 @@ import type { IInputEvent } from '@/interface/IInputEvent'
 import type { IUserLogin } from '@/interface/IUserLogin'
 import ReCaptchav2 from '@/components/ReCaptchav2.vue'
 import { SHA256 } from 'crypto-js'
-import { handleResponse, HttpStatusCode } from '@/Util/RequestError'
+import { handleResponse } from '@/Util/RequestError'
 
 import InputText from '@/components/InputText.vue'
 import ButtonView from '@/components/ButtonView.vue'
@@ -11,9 +11,13 @@ import ButtonView from '@/components/ButtonView.vue'
 import { Constants } from '@/constants'
 
 import { ref, reactive, toRaw, onMounted } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { useMutation } from '@vue/apollo-composable'
 import { authencation } from '@/graphql/account'
+import type { IAlert } from '@/interface/IAlert'
+
+import { useNotifyStore } from '@/store/notify'
+const notifyStore = useNotifyStore()
 
 const className = {
     valid: 'form-control valid-txt',
@@ -22,6 +26,8 @@ const className = {
 }
 
 const { mutate: loginUser } = useMutation(authencation)
+
+const refAlert = ref<IAlert>()
 
 const btnLoginMessage = ref<string>('')
 const inputDisabled = ref<boolean>(false)
@@ -45,6 +51,9 @@ const validMessage: Record<string, string> = reactive({
 })
 
 onMounted(() => {
+    if (notifyStore.checkNotify() != null) {
+        refAlert.value?.show('danger', notifyStore.getNotify())
+    }
     const remember = localStorage.getItem(Constants.LS_REMEMBER)
     if (remember) {
         loginState.username = JSON.parse(remember)
@@ -361,7 +370,7 @@ const HandlePressEnter = () => {
         </div>
     </div>
     <!-- <ModalView @toggle="(event: Modal) => (MyModal = event)"></ModalView> -->
-    <!-- <AlertView></AlertView> -->
+    <AlertView ref="refAlert"></AlertView>
 </template>
 <style scoped>
 .v-enter-active,

@@ -1,6 +1,12 @@
 export interface GraphQLResponse {
     data: any
-    errors?: { message: string }[]
+    errors?: {
+        message: string
+        extensions: {
+            code: string
+            statusCode: number
+        }
+    }[]
 }
 
 export default async function fetchGraphQL(
@@ -19,15 +25,12 @@ export default async function fetchGraphQL(
         })
     })
 
-    if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`)
-    }
-
     const responseData: GraphQLResponse = await response.json()
     if (responseData.errors) {
-        throw new Error(
-            `GraphQL error! Messages: ${responseData.errors.map((err) => err.message).join(', ')}`
-        )
+        // throw new Error(
+        //     `GraphQL error! Messages: ${responseData.errors.map((err) => err.message).join(', ')}`
+        // )
+        throw responseData
     }
     return responseData
 }
