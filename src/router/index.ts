@@ -10,23 +10,29 @@ const router = createRouter({
     routes: route
 })
 
-const checkAuth = (requireAuth: boolean): string => {
+const checkAuth = (name: string | null | undefined, requireAuth: boolean): string => {
     let path: string = ''
-    const authStore = useAuthStore()
+    const isLoginPath = name && name == 'login'
 
-    if (requireAuth && !authStore.isLogin) {
-        // const authInfo = JSON.parse(String(localStorage.getItem(Constants.LS_USER_ID))) as UserAuth
+    const authStore = useAuthStore()
+    if (!authStore.isLogin && (isLoginPath || requireAuth)) {
         const isLogin = localStorage.getItem(Constants.LS_IS_LOGIN)
         if (isLogin && isLogin == String(true)) {
-            authStore.isLogin = true
-            authStore.trackExpire(router)
-        } else path = 'login'
+            if (requireAuth || isLoginPath) {
+                authStore.isLogin = true
+                authStore.trackExpire(router)
+            }
+
+            if (isLoginPath) path = 'home'
+        } else if (!isLoginPath) {
+            path = 'login'
+        }
     }
     return path
 }
 
 router.beforeEach((to, from, next) => {
-    const path = checkAuth(Boolean(to.meta.requireAuth))
+    const path = checkAuth(to.name?.toString(), Boolean(to.meta.requireAuth))
     if (path) next({ name: path })
     else next()
 })
