@@ -199,12 +199,56 @@ const confirmedModal = () => {
                                     <tr>
                                         <td>Giới tính:</td>
                                         <td>
-                                            <InputTextReadOnly
-                                                v-model:value="accountStore.account.gender"
-                                                :isReadOnly="isReadOnly"
-                                                :placeholder="placeholder"
-                                                ref="refGender"
-                                            />
+                                            <div v-if="isReadOnly">
+                                                {{ accountStore.account.gender }}
+                                            </div>
+                                            <div v-else class="row">
+                                                <div class="col-2">
+                                                    <RadioCmp
+                                                        id="rd-male"
+                                                        name="gender"
+                                                        :checked="
+                                                            accountStore.account.gender == 'Nam'
+                                                        "
+                                                        value="Name"
+                                                        @cheked="
+                                                            (event) =>
+                                                                (accountStore.account.gender =
+                                                                    event)
+                                                        "
+                                                    />
+                                                </div>
+                                                <div class="col-2">
+                                                    <RadioCmp
+                                                        id="rd-female"
+                                                        name="gender"
+                                                        :checked="
+                                                            accountStore.account.gender == 'Nữ'
+                                                        "
+                                                        value="Nữ"
+                                                        @cheked="
+                                                            (event) =>
+                                                                (accountStore.account.gender =
+                                                                    event)
+                                                        "
+                                                    />
+                                                </div>
+                                                <div class="col-2">
+                                                    <RadioCmp
+                                                        id="rd-other"
+                                                        name="gender"
+                                                        :checked="
+                                                            accountStore.account.gender == 'Khác'
+                                                        "
+                                                        value="Khác"
+                                                        @cheked="
+                                                            (event) =>
+                                                                (accountStore.account.gender =
+                                                                    event)
+                                                        "
+                                                    />
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
