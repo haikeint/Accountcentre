@@ -1,6 +1,9 @@
 <script lang="ts" setup>
-import { ref, toRaw, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import RadioCmp from '@/components/Form/RadioCmp.vue'
+import DataPicker from '@/components/Form/DataPicker.vue'
+
 const router = useRouter()
 
 import InputTextReadOnly from '@/components/Input/InputTextReadOnly.vue'
@@ -199,9 +202,9 @@ const confirmedModal = () => {
                                     <tr>
                                         <td>Giới tính:</td>
                                         <td>
-                                            <div v-if="isReadOnly">
+                                            <template v-if="isReadOnly">
                                                 {{ accountStore.account.gender }}
-                                            </div>
+                                            </template>
                                             <div v-else class="row">
                                                 <div class="col-2">
                                                     <RadioCmp
@@ -254,11 +257,12 @@ const confirmedModal = () => {
                                     <tr>
                                         <td>Ngày sinh:</td>
                                         <td>
-                                            <InputTextReadOnly
+                                            <template v-if="isReadOnly">
+                                                {{ accountStore.account.birthdate }}
+                                            </template>
+                                            <DataPicker
+                                                v-else
                                                 v-model:value="accountStore.account.birthdate"
-                                                :isReadOnly="isReadOnly"
-                                                :placeholder="placeholder"
-                                                ref="refBirthdate"
                                             />
                                         </td>
                                     </tr>
