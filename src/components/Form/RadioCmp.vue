@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-const emit = defineEmits(['update:value'])
-defineProps({
+const emit = defineEmits(['cheked'])
+const props = defineProps({
     id: { type: String, required: true },
+    name: { type: String, required: true },
     value: { type: String, required: true },
     checked: { type: Boolean, default: false }
 })
 const updateValue = (event: Event) => {
     const target = event.target as HTMLInputElement
-    emit('update:value', target.value)
+    if (target.checked) {
+        emit('cheked', props.value)
+    }
 }
 </script>
 <template>
@@ -16,10 +19,12 @@ const updateValue = (event: Event) => {
             class="form-check-input"
             :checked="checked"
             :id="id"
+            :name="name"
+            :value="value"
             @change="updateValue"
             type="radio"
         />
-        <label class="form-check-label" :for="id"><slot></slot></label>
+        <label class="form-check-label" :for="id">{{ value }}</label>
     </div>
 </template>
 <style scoped>

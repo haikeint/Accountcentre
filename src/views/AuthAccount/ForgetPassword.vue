@@ -391,10 +391,11 @@ const btnPrevious = () => {
                                             <RadioCmp
                                                 v-if="setepCurrent == 2"
                                                 id="rd-forgetpassword"
+                                                name="rd-forgetpassword"
                                                 :checked="true"
-                                                v-model:value="account.email"
+                                                :value="account.email"
                                                 :disabled="disabled"
-                                                >{{ account.email }}</RadioCmp
+                                            />
                                             >
                                             <div v-if="setepCurrent == 3" class="row gx-2 mb-1">
                                                 <div class="col-6">
