@@ -40,7 +40,10 @@ const updateSecure = (object: object) => {
         objectInput: object
     })
         .then((res) => {
-            if (res?.data.updateSecure) refAlert.value?.show('success', 'Cập nhật thành công.')
+            if (res?.data.updateSecure) {
+                for (var key in expandStatus) expandStatus[key] = false
+                refAlert.value?.show('success', 'Cập nhật thành công.')
+            }
             if (!res?.data.updateSecure) refAlert.value?.show('danger', 'Cập nhật thất bại.')
         })
         .catch(({ graphQLErrors }) => {
@@ -49,6 +52,10 @@ const updateSecure = (object: object) => {
                     if (extensions.statusCode == HttpStatusCode.Unauthorized) {
                         notifyStore.setNotify('Phiên đăng nhập hết hạn')
                         router.push({ name: 'login' })
+                    }
+
+                    if (extensions.statusCode == HttpStatusCode.Forbidden) {
+                        refAlert.value?.show('danger', 'Mật khẩu hiện tại không đúng.')
                     }
                 })
             } else {

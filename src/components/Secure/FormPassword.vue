@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import InputText from '../Util/InputText.vue'
-import LabelComp from '../Util/LabelComp.vue'
+import { reactive, ref, toRaw } from 'vue'
+import InputText from '@/components/InputText.vue'
 import type { IModal } from '../../interface/IModal'
+import type { IInputEvent } from '@/interface/IInputEvent'
+const placeholder = 'abcABC@123'
 const refModal = ref<IModal>()
 
 const password = reactive({
@@ -10,11 +11,93 @@ const password = reactive({
     new: '',
     repeat: ''
 })
+const validState = reactive({
+    oldPasswordClass: 'form-control',
+    newPasswordClass: 'form-control',
+    repeatPasswordClass: 'form-control'
+})
+const validMessage: Record<string, string> = reactive({
+    oldPassword: '',
+    newPassword: '',
+    repeatPassword: ''
+})
 
+const validPassword = (value: string) => {
+    let validReslut: boolean = true
+    let message: string[] = []
+    if (!value) {
+        validReslut = false
+        message.push('Mật khẩu không được để trống.')
+    }
+
+    if (validReslut && value) {
+        if (placeholder == value) {
+            validReslut = false
+            message.push('Mật khẩu không được giống với gợi ý')
+        }
+        if (!(value.length >= 6 && value.length <= 16)) {
+            validReslut = false
+            message.push('Độ dài từ 6 - 16 ký tự')
+        }
+        if (!/[A-Z]/.test(value)) {
+            validReslut = false
+            message.push('Ít nhất 1 chữ in Hoa')
+        }
+        if (!/[a-z]/.test(value)) {
+            validReslut = false
+            message.push('Ít nhất 1 chữ thường')
+        }
+        if (!/[0-9]/.test(value)) {
+            validReslut = false
+            message.push('Ít nhất 1 số')
+        }
+        if (!/[^A-Za-z0-9]/.test(value)) {
+            validReslut = false
+            message.push('Ít nhất 1 ký tự đặc biệt')
+        }
+    }
+    return validReslut ? '' : message.join('<br>')
+}
+
+const validFn = {
+    checkOldPassword: (value: string) => {
+        let message: string = validPassword(value)
+
+        validMessage.oldPassword = message
+        validState.oldPasswordClass = !message
+            ? 'form-control valid-txt'
+            : 'form-control invalid-txt'
+    },
+    checkNewPassword: (value: string) => {
+        let message: string = validPassword(value)
+        if (!message && password.new == password.old) {
+            message = 'Mật khẩu mới không được giống với mật khẩu hiện tại.'
+        }
+        validMessage.newPassword = message
+        validState.newPasswordClass = !message
+            ? 'form-control valid-txt'
+            : 'form-control invalid-txt'
+    },
+    checkRepeatPassword: (value: string) => {
+        let message: string = validPassword(value)
+        if (!message && password.new != password.repeat) {
+            message = 'Mật khẩu vừa nhập không khớp.'
+        }
+        validMessage.repeatPassword = message
+        validState.repeatPasswordClass = !message
+            ? 'form-control valid-txt'
+            : 'form-control invalid-txt'
+    }
+}
 const emit = defineEmits(['update'])
 
 const update = () => {
-    refModal.value?.show()
+    validFn.checkOldPassword(password.old)
+    validFn.checkNewPassword(password.new)
+    validFn.checkRepeatPassword(password.repeat)
+    if (!Object.values(validMessage).some((value) => Boolean(value))) {
+        refModal.value?.show()
+    }
 }
 
 const confirmedModal = () => {
@@ -33,28 +116,56 @@ const confirmedModal = () => {
             ></div>
             <div class="col-md-6 col-sm-9">
                 <div class="mb-3">
-                    <LabelComp to="password-current" text="Mật khẩu hiện tại"></LabelComp>
                     <InputText
-                        id="password-current"
-                        placeholder="ABCabc@123"
-                        v-model:value="password.old"
-                    ></InputText>
+                        id="ipres-oldpassword"
+                        type="password"
+                        :className="validState.oldPasswordClass"
+                        label="Mật khẩu hiện tại"
+                        :placeholder="placeholder"
+                        :message="validMessage.oldPassword"
+                        :value="toRaw(password.old)"
+                        :disabled="false"
+                        :events="{
+                            blur: (event: IInputEvent) =>
+                                validFn.checkOldPassword(event.target.value),
+                            change: (event: IInputEvent) => (password.old = event.target.value)
+                        }"
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <InputText
+                        id="ipres-newpassword"
+                        type="password"
+                        :className="validState.newPasswordClass"
+                        label="Mật khẩu mới"
+                        :placeholder="placeholder"
+                        :message="validMessage.newPassword"
+                        :value="toRaw(password.new)"
+                        :disabled="false"
+                        :events="{
+                            blur: (event: IInputEvent) =>
+                                validFn.checkNewPassword(event.target.value),
+                            change: (event: IInputEvent) => (password.new = event.target.value)
+                        }"
+                    />
                 </div>
                 <div class="mb-3">
-                    <LabelComp to="password-new" text="Mật khẩu mới"></LabelComp>
                     <InputText
-                        id="password-new"
-                        placeholder="ABCabc@123"
-                        v-model:value="password.new"
-                    ></InputText>
-                </div>
-                <div class="mb-3">
-                    <LabelComp to="password-repeat" text="Nhập lại mật khẩu"></LabelComp>
-                    <InputText
-                        id="password-repeat"
-                        placeholder="ABCabc@123"
-                        v-model:value="password.repeat"
-                    ></InputText>
+                        id="ipres-repeatPassword"
+                        type="password"
+                        :className="validState.repeatPasswordClass"
+                        label="Nhập lại mật khẩu mới"
+                        :placeholder="placeholder"
+                        :message="validMessage.repeatPassword"
+                        :value="toRaw(password.repeat)"
+                        :disabled="false"
+                        :events="{
+                            blur: (event: IInputEvent) =>
+                                validFn.checkRepeatPassword(event.target.value),
+                            change: (event: IInputEvent) => (password.repeat = event.target.value)
+                        }"
+                    />
                 </div>
                 <button class="btn btn-danger rounded-pill" @click="update">Cập nhật</button>
             </div>

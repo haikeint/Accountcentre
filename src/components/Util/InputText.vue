@@ -2,6 +2,7 @@
 defineProps({
     id: { type: String, required: true },
     placeholder: { type: String, default: '' },
+    type: { type: String, default: 'text' },
     value: { type: String, required: true }
 })
 
@@ -15,7 +16,7 @@ const updateValue = (event: Event) => {
 <template>
     <input
         :id="id"
-        type="text"
+        :type="type"
         class="form-control"
         :placeholder="placeholder"
         :value="value"
