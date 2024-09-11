@@ -396,7 +396,6 @@ const btnPrevious = () => {
                                                 :value="account.email"
                                                 :disabled="disabled"
                                             />
-                                            >
                                             <div v-if="setepCurrent == 3" class="row gx-2 mb-1">
                                                 <div class="col-6">
                                                     <InputText

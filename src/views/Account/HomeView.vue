@@ -202,9 +202,12 @@ const confirmedModal = () => {
                                     <tr>
                                         <td>Giới tính:</td>
                                         <td>
-                                            <template v-if="isReadOnly">
-                                                {{ accountStore.account.gender }}
-                                            </template>
+                                            <InputTextReadOnly
+                                                v-if="isReadOnly"
+                                                v-model:value="accountStore.account.gender"
+                                                :isReadOnly="isReadOnly"
+                                                :placeholder="placeholder"
+                                            />
                                             <div v-else class="row">
                                                 <div class="col-2">
                                                     <RadioCmp
@@ -213,7 +216,7 @@ const confirmedModal = () => {
                                                         :checked="
                                                             accountStore.account.gender == 'Nam'
                                                         "
-                                                        value="Name"
+                                                        value="Nam"
                                                         @cheked="
                                                             (event) =>
                                                                 (accountStore.account.gender =
@@ -257,9 +260,12 @@ const confirmedModal = () => {
                                     <tr>
                                         <td>Ngày sinh:</td>
                                         <td>
-                                            <template v-if="isReadOnly">
-                                                {{ accountStore.account.birthdate }}
-                                            </template>
+                                            <InputTextReadOnly
+                                                v-if="isReadOnly"
+                                                v-model:value="accountStore.account.birthdate"
+                                                :isReadOnly="isReadOnly"
+                                                :placeholder="placeholder"
+                                            />
                                             <DataPicker
                                                 v-else
                                                 v-model:value="accountStore.account.birthdate"

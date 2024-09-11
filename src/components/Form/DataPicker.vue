@@ -2,7 +2,7 @@
 import flatpickr from 'flatpickr'
 import 'flatpickr/dist/flatpickr.min.css'
 import { Vietnamese } from 'flatpickr/dist/l10n/vn.js'
-import { ref, onMounted, watch, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 
 const emit = defineEmits(['update:value'])
 
@@ -43,3 +43,14 @@ const change = (event: Event) => {
         @input="change"
     />
 </template>
+
+<style>
+.flatpickr-day.selected {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+.flatpickr-day.selected:hover {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+</style>
