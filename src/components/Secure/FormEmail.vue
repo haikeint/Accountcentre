@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import InputText from '../Util/InputText.vue'
-import LabelComp from '../Util/LabelComp.vue'
+import type { IInputEvent } from '@/interface/IInputEvent'
+import { reactive, ref, toRaw } from 'vue'
+
+import InputText from '@/components/InputText.vue'
 
 import type { IModal } from '../../interface/IModal'
 import { useMutation } from '@vue/apollo-composable'
@@ -11,9 +12,55 @@ import { MUTATION_SEND_VERIFY_EMAIL, MUTATION_CHANGE_EMAIL } from '@/graphql/acc
 const { mutate: sendVerifyEmail } = useMutation(MUTATION_SEND_VERIFY_EMAIL)
 const { mutate: changeEmail } = useMutation(MUTATION_CHANGE_EMAIL)
 
+const validMessage: Record<string, string> = reactive({
+    oldEmail: '',
+    newEmail: ''
+})
+
+const validState = reactive({
+    oldEmailClass: 'form-control',
+    newEmailClass: 'form-control'
+})
+
+const validFn = {
+    checkOldEmail: (value: string) => {
+        let result = ''
+        if (value) {
+            let emailEl = value.split('@')
+            if (emailEl.length < 2) result = 'Email cần có ký tự: @'
+            if (!result && !emailEl[0]) result = 'Phía trước @ không được để trống'
+            if (!result && !emailEl[1].includes('.')) result = 'Phía sau @ cần có ký tự: "."'
+            else if (!result) {
+                let beforeEmailEl = emailEl[1].split('.')
+                if (!beforeEmailEl[1]) result = 'Phía sau "." không được để trống'
+                if (!beforeEmailEl[0]) result = 'Phía trước "." không được để trống'
+            }
+        } else result = 'Email không được để trống.'
+
+        validMessage.oldEmail = result
+        validState.oldEmailClass = result ? 'form-control invalid-txt' : 'form-control valid-txt'
+    },
+    checkNewEmail: (value: string) => {
+        let result = ''
+        if (value) {
+            let emailEl = value.split('@')
+            if (emailEl.length < 2) result = 'Email cần có ký tự: @'
+            if (!result && !emailEl[0]) result = 'Phía trước @ không được để trống'
+            if (!result && !emailEl[1].includes('.')) result = 'Phía sau @ cần có ký tự: "."'
+            else if (!result) {
+                let beforeEmailEl = emailEl[1].split('.')
+                if (!beforeEmailEl[1]) result = 'Phía sau "." không được để trống'
+                if (!beforeEmailEl[0]) result = 'Phía trước "." không được để trống'
+            }
+        } else result = 'Email không được để trống.'
+
+        validMessage.newEmail = result
+        validState.newEmailClass = result ? 'form-control invalid-txt' : 'form-control valid-txt'
+    }
+}
 const emit = defineEmits(['alert'])
 
-defineProps({
+const props = defineProps({
     isExisted: { type: Boolean, required: true },
     isVerify: { type: Boolean, required: true },
     emailMask: { type: String, default: '' }
@@ -58,7 +105,12 @@ const verifyEmail = () => {
         })
 }
 const update = () => {
-    refModal.value?.show()
+    if (props.isVerify) validFn.checkOldEmail(email.old)
+    validFn.checkNewEmail(email.new)
+
+    if (!Object.values(validMessage).some((value) => Boolean(value))) {
+        refModal.value?.show()
+    }
 }
 
 const confirmedModal = () => {
@@ -119,22 +171,37 @@ const confirmedModal = () => {
                     <hr />
                 </template>
                 <template v-else>
-                    <div class="mb-3">
-                        <LabelComp to="email-current" text="Email cũ"></LabelComp>
+                    <div class="mb-2">
                         <InputText
-                            id="email-current"
-                            v-model:value="email.old"
-                            placeholder="ABCabc@gmail.com"
-                        ></InputText>
+                            id="ipres-old-mail"
+                            :className="validState.oldEmailClass"
+                            label="Email hiện tại"
+                            placeholder="abc@gmail.com"
+                            :message="validMessage.oldEmail"
+                            :value="toRaw(email.old)"
+                            :disabled="loading"
+                            :events="{
+                                blur: (event: IInputEvent) =>
+                                    validFn.checkOldEmail(event.target.value),
+                                change: (event: IInputEvent) => (email.old = event.target.value)
+                            }"
+                        />
                     </div>
                 </template>
                 <div class="mb-3">
-                    <LabelComp to="email-new" text="Email mới"></LabelComp>
                     <InputText
-                        id="email-new"
-                        v-model:value="email.new"
-                        placeholder="ABCabc@gmail.com"
-                    ></InputText>
+                        id="ipres-new-mail"
+                        :className="validState.newEmailClass"
+                        label="Email mới"
+                        placeholder="abc@gmail.com"
+                        :message="validMessage.newEmail"
+                        :value="toRaw(email.new)"
+                        :disabled="loading"
+                        :events="{
+                            blur: (event: IInputEvent) => validFn.checkNewEmail(event.target.value),
+                            change: (event: IInputEvent) => (email.new = event.target.value)
+                        }"
+                    />
                 </div>
 
                 <button :disabled="loading" @click="update" class="btn btn-danger rounded-pill">
