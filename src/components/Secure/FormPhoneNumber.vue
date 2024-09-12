@@ -67,7 +67,7 @@ const confirmedModal = () => {
             ></div>
             <div class="col-md-6 col-sm-9">
                 <div class="mb-3" v-if="isExisted">
-                    <LabelComp to="phongnumber-current" text="Số điện thoại cũ"></LabelComp>
+                    <LabelComp to="phongnumber-current" text="SĐT hiện tại"></LabelComp>
                     <InputText
                         id="phongnumber-current"
                         placeholder="0123123123"
@@ -75,7 +75,7 @@ const confirmedModal = () => {
                     ></InputText>
                 </div>
                 <div class="mb-3">
-                    <LabelComp to="phongnumber-new" text="Số điện thoại mới"></LabelComp>
+                    <LabelComp to="phongnumber-new" text="SĐT mới"></LabelComp>
                     <InputText
                         id="phongnumber-new"
                         placeholder="0123123123"
