@@ -6,6 +6,7 @@ export class AccountResult {
     gender: string = DEFAULT
     createdat: string = DEFAULT
     email: string = DEFAULT
+    isEmailVerified: string = DEFAULT
     fullname: string = DEFAULT
     id: string = DEFAULT
     idcode: string = DEFAULT

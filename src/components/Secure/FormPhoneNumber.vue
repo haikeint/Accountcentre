@@ -3,7 +3,13 @@ import { reactive, ref } from 'vue'
 import InputText from '../Util/InputText.vue'
 import LabelComp from '../Util/LabelComp.vue'
 import type { IModal } from '../../interface/IModal'
+
+import { useMutation } from '@vue/apollo-composable'
+import { MUTATION_CHANGE_PHONE } from '@/graphql/account'
+const { mutate: changePhone } = useMutation(MUTATION_CHANGE_PHONE)
+
 const refModal = ref<IModal>()
+const loading = ref<boolean>(false)
 
 defineProps({
     isExisted: { type: Boolean, required: true }
@@ -14,17 +20,42 @@ const phoneNumber = reactive({
     new: ''
 })
 
-const emit = defineEmits(['update'])
+const emit = defineEmits(['alert'])
 
 const update = () => {
     refModal.value?.show()
 }
 
 const confirmedModal = () => {
-    emit('update', {
+    loading.value = true
+    changePhone({
         oldPhone: phoneNumber.old,
         newPhone: phoneNumber.new
     })
+        .then((res) => {
+            loading.value = false
+            emit('alert', {
+                type: 'success',
+                message: res?.data.changePhone
+            })
+        })
+        .catch(({ graphQLErrors, networkError }) => {
+            loading.value = false
+            if (graphQLErrors && graphQLErrors.length != 0) {
+                const { message } = graphQLErrors[0]
+                emit('alert', {
+                    type: 'danger',
+                    message: message
+                })
+            }
+            if (networkError) {
+                emit('alert', {
+                    type: 'danger',
+                    message: networkError
+                })
+            }
+        })
+
     refModal.value?.hide()
 }
 </script>

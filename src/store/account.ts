@@ -31,6 +31,9 @@ export const useAccountStore = defineStore('account', () => {
                             case 'birthdate':
                                 accountResult = accountResult.slice(0, 10)
                                 break
+                            case 'isEmailVerified':
+                                accountResult = accountResult ? accountResult : ''
+                                break
                         }
                         account[accoutKey] = accountResult
                     }

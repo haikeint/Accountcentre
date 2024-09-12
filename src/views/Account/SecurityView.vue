@@ -11,15 +11,8 @@ const router = useRouter()
 import type { IAlert } from '@/interface/IAlert'
 
 import { useAccountStore } from '@/store/account'
-import { useNotifyStore } from '@/store/notify'
-
-import { useMutation } from '@vue/apollo-composable'
-import { MUTATION_UPDATE_SECURE } from '@/graphql/account'
-
-const { mutate } = useMutation(MUTATION_UPDATE_SECURE)
 
 const accountStore = useAccountStore()
-const notifyStore = useNotifyStore()
 
 onMounted(() => {
     if (accountStore.account.id.length == 0) accountStore.getAccount(router)
@@ -35,33 +28,12 @@ const expandStatus = reactive<any>({
     idCode: false
 })
 
-const updateSecure = (object: object) => {
-    mutate({
-        objectInput: object
-    })
-        .then((res) => {
-            if (res?.data.updateSecure) {
-                for (var key in expandStatus) expandStatus[key] = false
-                refAlert.value?.show('success', 'Cập nhật thành công.')
-            }
-            if (!res?.data.updateSecure) refAlert.value?.show('danger', 'Cập nhật thất bại.')
-        })
-        .catch(({ graphQLErrors }) => {
-            if (graphQLErrors) {
-                graphQLErrors.forEach(({ extensions }: any) => {
-                    if (extensions.statusCode == HttpStatusCode.Unauthorized) {
-                        notifyStore.setNotify('Phiên đăng nhập hết hạn')
-                        router.push({ name: 'login' })
-                    }
+const showAlert = (event: any) => {
+    if (event.type == 'success') {
+        for (var key in expandStatus) expandStatus[key] = false
+    }
 
-                    if (extensions.statusCode == HttpStatusCode.Forbidden) {
-                        refAlert.value?.show('danger', 'Mật khẩu hiện tại không đúng.')
-                    }
-                })
-            } else {
-                refAlert.value?.show('danger', 'Cập nhật thất bại.')
-            }
-        })
+    refAlert.value?.show(event.type, event.message)
 }
 
 const handleButtonChangeAndClose = (event: string) => {
@@ -128,7 +100,7 @@ const handleButtonChangeAndClose = (event: string) => {
                 </div>
             </div>
             <Transition name="slide">
-                <FormPassword v-if="expandStatus.password" @update="updateSecure" />
+                <FormPassword v-if="expandStatus.password" @alert="showAlert" />
             </Transition>
             <hr />
             <div class="row">
@@ -159,7 +131,7 @@ const handleButtonChangeAndClose = (event: string) => {
                 <FormPhoneNumber
                     v-if="expandStatus.phoneNumber"
                     :isExisted="accountStore.account.phone.length > 0"
-                    @update="updateSecure"
+                    @alert="showAlert"
                 />
             </Transition>
             <hr />
@@ -172,6 +144,9 @@ const handleButtonChangeAndClose = (event: string) => {
                 <div class="col-md-6 col-sm-9">
                     <h5 v-if="accountStore.account.email || false">
                         Email: {{ accountStore.account.email }}
+                        <i v-if="accountStore.account.isEmailVerified.length == 0"
+                            >(chưa xác thực)</i
+                        >
                     </h5>
                     <h5 v-else>Email: <i>(chưa có thông tin)</i></h5>
                     <p>
@@ -192,7 +167,9 @@ const handleButtonChangeAndClose = (event: string) => {
                 <FormEmail
                     v-if="expandStatus.email"
                     :isExisted="accountStore.account.email.length > 0"
-                    @update="updateSecure"
+                    :isVerify="Boolean(accountStore.account.isEmailVerified)"
+                    :emailMask="accountStore.account.email"
+                    @alert="showAlert"
                 ></FormEmail>
             </Transition>
             <!-- <hr />

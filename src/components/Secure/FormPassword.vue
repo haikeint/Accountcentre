@@ -3,19 +3,28 @@ import { reactive, ref, toRaw } from 'vue'
 import InputText from '@/components/InputText.vue'
 import type { IModal } from '../../interface/IModal'
 import type { IInputEvent } from '@/interface/IInputEvent'
+
+import { useMutation } from '@vue/apollo-composable'
+import { MUTATION_CHANGE_PASSWORD } from '@/graphql/account'
+const { mutate: changePassword } = useMutation(MUTATION_CHANGE_PASSWORD)
+
 const placeholder = 'abcABC@123'
 const refModal = ref<IModal>()
+
+const loading = ref<boolean>(false)
 
 const password = reactive({
     old: '',
     new: '',
     repeat: ''
 })
+
 const validState = reactive({
     oldPasswordClass: 'form-control',
     newPasswordClass: 'form-control',
     repeatPasswordClass: 'form-control'
 })
+
 const validMessage: Record<string, string> = reactive({
     oldPassword: '',
     newPassword: '',
@@ -89,7 +98,7 @@ const validFn = {
             : 'form-control invalid-txt'
     }
 }
-const emit = defineEmits(['update'])
+const emit = defineEmits(['alert'])
 
 const update = () => {
     validFn.checkOldPassword(password.old)
@@ -101,10 +110,35 @@ const update = () => {
 }
 
 const confirmedModal = () => {
-    emit('update', {
+    loading.value = true
+    changePassword({
         oldPassword: password.old,
         newPassword: password.new
     })
+        .then((res) => {
+            loading.value = false
+            emit('alert', {
+                type: 'success',
+                message: res?.data.changePassword
+            })
+        })
+        .catch(({ graphQLErrors, networkError }) => {
+            loading.value = false
+            if (graphQLErrors && graphQLErrors.length != 0) {
+                const { message } = graphQLErrors[0]
+                emit('alert', {
+                    type: 'danger',
+                    message: message
+                })
+            }
+            if (networkError) {
+                emit('alert', {
+                    type: 'danger',
+                    message: networkError
+                })
+            }
+        })
+
     refModal.value?.hide()
 }
 </script>
@@ -124,7 +158,7 @@ const confirmedModal = () => {
                         :placeholder="placeholder"
                         :message="validMessage.oldPassword"
                         :value="toRaw(password.old)"
-                        :disabled="false"
+                        :disabled="loading"
                         :events="{
                             blur: (event: IInputEvent) =>
                                 validFn.checkOldPassword(event.target.value),
@@ -142,7 +176,7 @@ const confirmedModal = () => {
                         :placeholder="placeholder"
                         :message="validMessage.newPassword"
                         :value="toRaw(password.new)"
-                        :disabled="false"
+                        :disabled="loading"
                         :events="{
                             blur: (event: IInputEvent) =>
                                 validFn.checkNewPassword(event.target.value),
@@ -159,7 +193,7 @@ const confirmedModal = () => {
                         :placeholder="placeholder"
                         :message="validMessage.repeatPassword"
                         :value="toRaw(password.repeat)"
-                        :disabled="false"
+                        :disabled="loading"
                         :events="{
                             blur: (event: IInputEvent) =>
                                 validFn.checkRepeatPassword(event.target.value),
@@ -167,7 +201,12 @@ const confirmedModal = () => {
                         }"
                     />
                 </div>
-                <button class="btn btn-danger rounded-pill" @click="update">Cập nhật</button>
+                <button class="btn btn-danger rounded-pill" :disabled="loading" @click="update">
+                    <template v-if="loading"
+                        ><span class="fas fa-spinner fa-spin"></span> Đang xử lý</template
+                    >
+                    <template v-else>Cập nhật</template>
+                </button>
             </div>
         </div>
         <ModalView ref="refModal" @confirmedModal="confirmedModal"></ModalView>

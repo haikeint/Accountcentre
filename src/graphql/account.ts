@@ -44,6 +44,7 @@ const QUERY_GET_ACCOUNT = `
             birthdate
             address
             email
+            isEmailVerified
             phone
         }
     }
@@ -59,11 +60,29 @@ const MUTATION_UPDATE_INFO = gql`
         updateInfo(objectInput: $objectInput)
     }
 `
-const MUTATION_UPDATE_SECURE = gql`
-    mutation UpdateSecure($objectInput: UpdateSecureInput!) {
-        updateSecure(objectInput: $objectInput)
+
+const MUTATION_SEND_VERIFY_EMAIL = gql`
+    mutation {
+        sendVerifyEmail
     }
 `
+const MUTATION_CHANGE_PASSWORD = gql`
+    mutation changePassword($oldPassword: String!, $newPassword: String!) {
+        changePassword(oldPassword: $oldPassword, newPassword: $newPassword)
+    }
+`
+
+const MUTATION_CHANGE_PHONE = gql`
+    mutation changePhone($oldPhone: String!, $newPhone: String!) {
+        changePhone(oldPhone: $oldPhone, newPhone: $newPhone)
+    }
+`
+const MUTATION_CHANGE_EMAIL = gql`
+    mutation changeEmail($oldEmail: String!, $newEmail: String!) {
+        changeEmail(oldEmail: $oldEmail, newEmail: $newEmail)
+    }
+`
+
 export {
     getUserQuery,
     addUserMutate,
@@ -72,5 +91,8 @@ export {
     QUERY_GET_ACCOUNT,
     MUTATION_LOGOUT,
     MUTATION_UPDATE_INFO,
-    MUTATION_UPDATE_SECURE
+    MUTATION_SEND_VERIFY_EMAIL,
+    MUTATION_CHANGE_PASSWORD,
+    MUTATION_CHANGE_PHONE,
+    MUTATION_CHANGE_EMAIL
 }
