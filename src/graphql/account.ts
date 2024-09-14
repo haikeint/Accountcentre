@@ -72,11 +72,17 @@ const MUTATION_CHANGE_PASSWORD = gql`
     }
 `
 
-const MUTATION_CHANGE_PHONE = gql`
-    mutation changePhone($oldPhone: String!, $newPhone: String!) {
-        changePhone(oldPhone: $oldPhone, newPhone: $newPhone)
+const SEND_OTP_TO_PHONE = gql`
+    mutation sendOtpToPhone($newPhone: String!) {
+        sendOtpToPhone(newPhone: $newPhone)
     }
 `
+const VERIFY_OTP_TO_PHONE = gql`
+    mutation verifyOtpToPhone($newPhone: String!, $otp: String!) {
+        verifyOtpToPhone(newPhone: $newPhone, otp: $otp)
+    }
+`
+
 const MUTATION_CHANGE_EMAIL = gql`
     mutation changeEmail($oldEmail: String!, $newEmail: String!) {
         changeEmail(oldEmail: $oldEmail, newEmail: $newEmail)
@@ -93,6 +99,7 @@ export {
     MUTATION_UPDATE_INFO,
     MUTATION_SEND_VERIFY_EMAIL,
     MUTATION_CHANGE_PASSWORD,
-    MUTATION_CHANGE_PHONE,
+    SEND_OTP_TO_PHONE,
+    VERIFY_OTP_TO_PHONE,
     MUTATION_CHANGE_EMAIL
 }
